@@ -18,6 +18,7 @@ import java.nio.channels.FileChannel;
 
 /**
  * @Author: Jonatas De Oliveira Ferreira
+ * @Design: Gabriel Oliveira Pimenta
  *
  * @Version: 0.3
  */
