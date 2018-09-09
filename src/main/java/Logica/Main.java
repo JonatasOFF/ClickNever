@@ -8,18 +8,18 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
  * @Author: Jonatas De Oliveira Ferreira
+ * hg
  * @Version: 0.3
  */
 public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/grafica/sample.fxml"), ResourceBundle.getBundle("limguages"));
+        Parent root = FXMLLoader.load(getClass().getResource("/Grafica/sample.fxml"), ResourceBundle.getBundle("limguages"));
         Scene scene = new Scene(root);
         stage.getIcons().add(new Image("/Image/ClickerImage.png"));
         stage.setTitle("Clicker Never 0.3");
