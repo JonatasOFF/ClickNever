@@ -51,7 +51,7 @@
                         <Font size="18.0" />
                     </font>
                 </Label>
-                <Label alignment="CENTER" layoutX="726.0" prefHeight="60.0" prefWidth="172.0" text="Status" underline="true">
+                <Label alignment="CENTER" layoutX="726.0" prefHeight="60.0" prefWidth="172.0" text="%status" underline="true">
                     <font>
                         <Font name="Microsoft YaHei UI Light" size="36.0" />
                     </font>
@@ -83,7 +83,7 @@
                 <Label layoutX="69.0" layoutY="90.0" text="Min" />
                 <TextField fx:id="seg" layoutX="103.0" layoutY="57.0" prefHeight="29.0" prefWidth="32.0" promptText="s" text="10" />
                 <Label layoutX="109.0" layoutY="90.0" text="Seg" />
-                <Button fx:id="btAtivaMouseTempo" layoutX="141.0" layoutY="58.0" mnemonicParsing="false" onAction="#executaMouseTempo" text="Ativar" />
+                <Button fx:id="btAtivaMouseTempo" layoutX="141.0" layoutY="58.0" mnemonicParsing="false" onAction="#executaMouseTempo" text="%ativar" />
                 <Rectangle fx:id="retangulo111" arcHeight="5.0" arcWidth="5.0" height="500.0" layoutX="707.0" layoutY="-4.0" stroke="BLACK" strokeType="INSIDE" width="12.0">
                     <fill>
                         <RadialGradient centerY="0.5" cycleMethod="REFLECT" radius="0.5">
@@ -164,7 +164,7 @@
                         <Font size="26.0" />
                     </font>
                 </Text>
-                <Text layoutX="494.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MouseClickerAutomatico" textAlignment="CENTER" wrappingWidth="358.0000126361847">
+                <Text layoutX="494.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MouseClickerAutomatic" textAlignment="CENTER" wrappingWidth="358.0000126361847">
                     <font>
                         <Font size="22.0" />
                     </font>

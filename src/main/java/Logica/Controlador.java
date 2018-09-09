@@ -447,7 +447,6 @@ public class Controlador implements Initializable {
             segundos = Integer.parseInt(seg.getText());
         }
         if (!(min.getText().equals(""))) {
-            //ta com valor null
             minutos = Integer.parseInt(min.getText());
         }
         if (!(hours.getText().equals(""))) {
