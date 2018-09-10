@@ -504,8 +504,7 @@ public class Controlador implements Initializable {
             //interface que faz aparecerz
             setProgressbar(result);
 
-            //robot.delay(getVelocidade(radio.getText()));
-            robot.delay(1);
+            robot.delay(getVelocidade(radio.getText()));
             robot.mousePress(InputEvent.BUTTON1_MASK);
             robot.mouseRelease(InputEvent.BUTTON1_MASK);
 
