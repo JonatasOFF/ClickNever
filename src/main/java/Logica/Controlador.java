@@ -27,13 +27,15 @@ import java.util.logging.Logger;
 
 /**
  * @Author: Jonatas De Oliveira Ferreira
- * @Version: 0.3
+ * @Version: 0.4
  *
- * Coisas a se fazer na versão 0.3
+ * Coisas a se fazer Version 0.4:
  *
- * Setar para que o horário tenha relação ao clicker
- * Setar uma tecla para Pausar Click
- * Design precisa entrar em contato para as novas imagems
+ * Mudar a lingua para PT e EUA
+ * Entrar em contato com Design para mudar interface
+ * Verificar se é possivel dar uma introdução a *ClickerControler*
+ * Fazer documentação.
+ *
  */
 public class Controlador implements Initializable {
 
@@ -398,8 +400,7 @@ public class Controlador implements Initializable {
     }
 
     private void lerDados() {
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(System.getProperty("user.dir") + "\\" + "Saves" + "\\" + "save.ini")));
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(System.getProperty("user.dir") + "\\" + "Saves" + "\\" + "save.ini")))) {
             String linha;
             while((linha = reader.readLine()) != null) {
                 String[] dados = linha.split(",");
@@ -790,6 +791,8 @@ public class Controlador implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println(location);
         System.out.println(location.getPath());
+        System.out.println(resources.getKeys());
+        System.out.println(resources.getLocale());
 
         new detecta().start();
         lerDados();

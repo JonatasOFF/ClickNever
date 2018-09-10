@@ -21,6 +21,8 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+
+
 <AnchorPane fx:id="painelPrincipal" accessibleText="Click Never" maxHeight="300.0" maxWidth="900.0" minHeight="300.0" minWidth="900.0" prefHeight="300.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Logica.Controlador">
     <children>
         <MenuBar focusTraversable="false" prefHeight="28.0" prefWidth="900.0">
@@ -44,8 +46,8 @@
         </MenuBar>
         <Pane fx:id="panelClicker" layoutX="1.0" layoutY="27.0" prefHeight="274.0" prefWidth="900.0">
             <children>
-                <Button fx:id="btAtivaMouse" layoutX="168.0" layoutY="198.0" mnemonicParsing="false" onAction="#executaMouse" text="Ativar" />
-                <TextField fx:id="tfnumeros" layoutX="15.0" layoutY="198.0" pickOnBounds="false" prefHeight="18.0" prefWidth="145.0" promptText="Números de Clicker" text="10" />
+                <Button fx:id="btAtivaMouse" layoutX="168.0" layoutY="198.0" mnemonicParsing="false" onAction="#executaMouse" text="%ativar" />
+                <TextField fx:id="tfnumeros" layoutX="15.0" layoutY="198.0" pickOnBounds="false" prefHeight="18.0" prefWidth="145.0" />
                 <Label fx:id="iniciando" ellipsisString="" focusTraversable="false" layoutX="718.0" layoutY="60.0" prefHeight="27.0" prefWidth="182.0" snapToPixel="false" textAlignment="CENTER" wrapText="true">
                     <font>
                         <Font size="18.0" />
@@ -122,7 +124,7 @@
                     </font>
                 </Label>
                 <Button layoutX="232.0" layoutY="199.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#InformacoesClicke" prefHeight="25.0" prefWidth="28.0" text="?" />
-                <TextArea fx:id="textoClicker" cache="true" editable="false" layoutX="327.0" layoutY="161.0" prefHeight="110.0" prefWidth="380.0" promptText="TextoExplicando" text="Ao Colocar um número no espaçamento de &quot;Números de Clicker&quot;, com base no tempo, ele clickara o mesmo número que você colocou.   &#10;&#10;PS: Se colocado na velocidade 0.001/s, a uma chance de você &quot;Perder Clickers&quot;" visible="false" wrapText="true">
+                <TextArea fx:id="textoClicker" cache="true" editable="false" layoutX="327.0" layoutY="161.0" prefHeight="110.0" prefWidth="380.0" promptText="TextoExplicando" text="Ao Colocar um número no espaçamento de &quot;Clicker&quot;, com base no tempo, ele clickara o mesmo número que você colocou.   &#10;&#10;PS: Se colocado na velocidade 0.001/s, a uma chance de você &quot;Perder Clickers&quot;" visible="false" wrapText="true">
                     <font>
                         <Font name="System Bold Italic" size="13.0" />
                     </font>
