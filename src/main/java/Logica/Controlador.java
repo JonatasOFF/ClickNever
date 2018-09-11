@@ -234,10 +234,8 @@ public class Controlador implements Initializable {
                         pegaValores();
                         //interface que faz aparecer
                         Platform.runLater(() -> iniciando.setText("Em andamento..."));
-                        if (vezes != 0) {
                             executaclicker(vezes);
                             jaExecutou = false;
-                        }
                     } catch (InterruptedException | AWTException e) {
                         e.printStackTrace();
                     }
@@ -366,37 +364,34 @@ public class Controlador implements Initializable {
     }
 
     private String getListaSave() {
-        StringBuilder sb;
-        sb = new StringBuilder();
         //hora,minuto,segundo,numeroClicker,tempoComeca,teclaStop,pausa/continua,comeca,one,dez,cem,mil,ctrl,isTempoDeClicker
-        sb.append(hours.getText());
-        sb.append(",");
-        sb.append(min.getText());
-        sb.append(",");
-        sb.append(seg.getText());
-        sb.append(",");
-        sb.append(tfnumeros.getText());
-        sb.append(",");
-        sb.append(tfTempoDeClicker.getText());
-        sb.append(",");
-        sb.append(teclaStop.getText());
-        sb.append(",");
-        sb.append(pausar.getText());
-        sb.append(",");
-        sb.append(comeca.getText());
-        sb.append(",");
-        sb.append(oneMs.isSelected());
-        sb.append(",");
-        sb.append(dezms.isSelected());
-        sb.append(",");
-        sb.append(cemMs.isSelected());
-        sb.append(",");
-        sb.append(milMs.isSelected());
-        sb.append(",");
-        sb.append(ctrl.isSelected());
-        sb.append(",");
-        sb.append(cbTempoDeClicker.isSelected());
-        return sb.toString();
+        return hours.getText() +
+                "," +
+                min.getText() +
+                "," +
+                seg.getText() +
+                "," +
+                tfnumeros.getText() +
+                "," +
+                tfTempoDeClicker.getText() +
+                "," +
+                teclaStop.getText() +
+                "," +
+                pausar.getText() +
+                "," +
+                comeca.getText() +
+                "," +
+                oneMs.isSelected() +
+                "," +
+                dezms.isSelected() +
+                "," +
+                cemMs.isSelected() +
+                "," +
+                milMs.isSelected() +
+                "," +
+                ctrl.isSelected() +
+                "," +
+                cbTempoDeClicker.isSelected();
     }
 
     private void lerDados() {
@@ -457,14 +452,7 @@ public class Controlador implements Initializable {
                 horas = Integer.parseInt(hours.getText());
             }
         }
-        if (segundos == 0 && minutos == 0 && horas == 0 && tfnumeros.getText().equals("")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("ERROR");
-            alert.setContentText("Existem letras ou nada");
-            alert.show();
-        } else {
-            vezes = getNumeros();
-        }
+        vezes = getNumeros();
     }
 
     private void pauseClicker() throws InterruptedException {
@@ -491,24 +479,32 @@ public class Controlador implements Initializable {
      * @throws InterruptedException null
      */
     private void executaclicker(double quantas) throws AWTException, InterruptedException {
-        setPodeExecutarClicke(true);
-        Robot robot = new Robot();
-        RadioButton radio = (RadioButton) groupBotoes.getSelectedToggle();
-        quantas *= velocidadeTempo(radio.getText());
+        if(quantas != 0) {
+            setPodeExecutarClicke(true);
+            Robot robot = new Robot();
+            RadioButton radio = (RadioButton) groupBotoes.getSelectedToggle();
+            quantas *= velocidadeTempo(radio.getText());
+            for (double i = 0; i <= quantas && podeExecutarClicke; i++) {
+                radio = (RadioButton) groupBotoes.getSelectedToggle();
+                tempo((int) (quantas - i) / velocidadeTempo(radio.getText()));
+                double result = i / quantas;
 
-        for (double i = 1; i <= quantas && podeExecutarClicke; i++) {
-            radio = (RadioButton) groupBotoes.getSelectedToggle();
-            tempo((int) (quantas - i) / velocidadeTempo(radio.getText()));
-            double result = i / quantas;
+                //interface que faz aparecer
+                setProgressbar(result);
 
-            //interface que faz aparecerz
-            setProgressbar(result);
+                robot.delay(getVelocidade(radio.getText()));
+                robot.mousePress(InputEvent.BUTTON1_MASK);
+                robot.mouseRelease(InputEvent.BUTTON1_MASK);
 
-            robot.delay(getVelocidade(radio.getText()));
-            robot.mousePress(InputEvent.BUTTON1_MASK);
-            robot.mouseRelease(InputEvent.BUTTON1_MASK);
-
-            pauseClicker();
+                pauseClicker();
+            }
+        } else {
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.show();
+                alert.setTitle("Error");
+                alert.setContentText("Não a números a serem executados");
+            });
         }
         Platform.runLater(() -> {
             iniciando.setText("Fim da execução");
@@ -695,7 +691,7 @@ public class Controlador implements Initializable {
      * class para Parar/Pausar/Startar
      * Para o clicker de executar
      */
-    public class StopClicker implements NativeKeyListener {
+    public class ControleClicker implements NativeKeyListener {
         boolean ctrlOn = false;
 
         private boolean ctrlConfirma(boolean letra, boolean ctrlAtivo) {
@@ -715,13 +711,14 @@ public class Controlador implements Initializable {
         public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
 
             //(NativeInputEvent.CTRL_L_MASK & nativeKeyEvent.getKeyCode()) != 0
-            char letra = (NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode())).charAt(0);
+            String letra = (NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode()));
+            System.out.println(letra);
 
             if (NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode()).equals("Ctrl")) {
                 ctrlOn = true;
             }
 
-            if (ctrlConfirma(letra == pausar.getText().charAt(0), ctrlOn)) {
+            if (ctrlConfirma(letra.equals(pausar.getText()), ctrlOn)) {
                 if (!pausa) {
                     pausa = true;
                     Platform.runLater(() -> iniciando.setText("Pausado"));
@@ -730,10 +727,10 @@ public class Controlador implements Initializable {
                     Platform.runLater(() -> iniciando.setText("Em andamento..."));
                 }
             }
-            if (ctrlConfirma(letra == teclaStop.getText().charAt(0), ctrlOn)) {
+            if (ctrlConfirma(letra.equals(teclaStop.getText()), ctrlOn)) {
                 setPodeExecutarClicke(false);
             }
-            if (ctrlConfirma(letra == comeca.getText().charAt(0), ctrlOn)) {
+            if (ctrlConfirma(letra.equals(comeca.getText()), ctrlOn)) {
                 executaMouseTempo();
             }
         }
@@ -798,7 +795,7 @@ public class Controlador implements Initializable {
         lerDados();
         try {
             GlobalScreen.registerNativeHook();
-            GlobalScreen.addNativeKeyListener(new StopClicker());
+            GlobalScreen.addNativeKeyListener(new ControleClicker());
         } catch (NativeHookException e) {
             e.printStackTrace();
         }
