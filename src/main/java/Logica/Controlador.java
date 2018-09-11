@@ -17,6 +17,7 @@ import org.jnativehook.keyboard.NativeKeyListener;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.io.*;
+import java.lang.management.GarbageCollectorMXBean;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -86,6 +87,38 @@ public class Controlador implements Initializable {
         }
         return tempoDeClicker;
     }
+
+    private String getListaSave() {
+        //hora,minuto,segundo,numeroClicker,tempoComeca,teclaStop,pausa/continua,comeca,one,dez,cem,mil,ctrl,isTempoDeClicker
+        return hours.getText() +
+                "," +
+                min.getText() +
+                "," +
+                seg.getText() +
+                "," +
+                tfnumeros.getText() +
+                "," +
+                tfTempoDeClicker.getText() +
+                "," +
+                teclaStop.getText() +
+                "," +
+                pausar.getText() +
+                "," +
+                comeca.getText() +
+                "," +
+                oneMs.isSelected() +
+                "," +
+                dezms.isSelected() +
+                "," +
+                cemMs.isSelected() +
+                "," +
+                milMs.isSelected() +
+                "," +
+                ctrl.isSelected() +
+                "," +
+                cbTempoDeClicker.isSelected();
+    }
+
 
     void setPodeExecutarClicke(boolean podeExecutarClicke) {
         this.podeExecutarClicke = podeExecutarClicke;
@@ -363,37 +396,6 @@ public class Controlador implements Initializable {
         }
     }
 
-    private String getListaSave() {
-        //hora,minuto,segundo,numeroClicker,tempoComeca,teclaStop,pausa/continua,comeca,one,dez,cem,mil,ctrl,isTempoDeClicker
-        return hours.getText() +
-                "," +
-                min.getText() +
-                "," +
-                seg.getText() +
-                "," +
-                tfnumeros.getText() +
-                "," +
-                tfTempoDeClicker.getText() +
-                "," +
-                teclaStop.getText() +
-                "," +
-                pausar.getText() +
-                "," +
-                comeca.getText() +
-                "," +
-                oneMs.isSelected() +
-                "," +
-                dezms.isSelected() +
-                "," +
-                cemMs.isSelected() +
-                "," +
-                milMs.isSelected() +
-                "," +
-                ctrl.isSelected() +
-                "," +
-                cbTempoDeClicker.isSelected();
-    }
-
     private void lerDados() {
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(System.getProperty("user.dir") + "\\" + "Saves" + "\\" + "save.ini")))) {
             String linha;
@@ -455,6 +457,13 @@ public class Controlador implements Initializable {
         vezes = getNumeros();
     }
 
+    private void tempo(int tempo) {
+        int h = tempo / 3600;
+        int m = (tempo % 3600) / 60;
+        int s = (tempo % 3600) % 60;
+        Platform.runLater(() -> lbDuracao.setText(h + " : " + m + " : " + s));
+    }
+
     private void pauseClicker() throws InterruptedException {
         if (pausa) {
             Thread.sleep(3000);
@@ -464,13 +473,6 @@ public class Controlador implements Initializable {
                 pauseClicker();
             }
         }
-    }
-
-    private void tempo(int tempo) {
-        int hourasTempo = tempo / 3600;
-        int minTempo = (tempo % 3600) / 60;
-        int secTempo = (tempo % 3600) % 60;
-        Platform.runLater(() -> lbDuracao.setText(hourasTempo + " : " + minTempo + " : " + secTempo));
     }
 
     /**
@@ -714,7 +716,7 @@ public class Controlador implements Initializable {
             String letra = (NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode()));
             System.out.println(letra);
 
-            if (NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode()).equals("Ctrl")) {
+            if (letra.equals("Ctrl") || letra.equals("Meta")) {
                 ctrlOn = true;
             }
 
@@ -737,7 +739,7 @@ public class Controlador implements Initializable {
 
         @Override
         public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
-            if ((NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode()).equals("Ctrl"))) {
+            if (NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode()).equals("Ctrl") || NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode()).equals("Meta")) {
                 ctrlOn = false;
             }
         }
@@ -763,12 +765,11 @@ public class Controlador implements Initializable {
                 if(cbTempoDeClicker.isSelected()) {
                     setPodeExecutarClicke(true);
                     for (int i = getTfTempoDeClicker(); 0 <= i; i--) {
-                        StringBuilder sb = new StringBuilder();
                         try {
-                            sb.append("Começa em ");
-                            sb.append(String.valueOf((double) i));
-                            sb.append("s");
-                            Platform.runLater(() -> iniciando.setText(sb.toString()));
+                            String comeca = "Começa em " +
+                                    String.valueOf((double) i) +
+                                    "s";
+                            Platform.runLater(() -> iniciando.setText(comeca));
                             if(!podeExecutarClicke) {
                                 i -= getTfTempoDeClicker();
                                 setPodeExecutarClicke(true);
@@ -786,10 +787,10 @@ public class Controlador implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println(location);
-        System.out.println(location.getPath());
-        System.out.println(resources.getKeys());
-        System.out.println(resources.getLocale());
+//        System.out.println(location);
+//        System.out.println(location.getPath());
+//        System.out.println(resources.getKeys());
+//        System.out.println(resources.getLocale());
 
         new detecta().start();
         lerDados();
