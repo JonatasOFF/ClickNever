@@ -1,5 +1,76 @@
-Version 0.4
+Version 0.4 -Soon
 
 Mudanças:
 
--Agora o Clicker clickara mais rapido
+-Agora o Clicker clickara mais rapido e possivel erro de perda de clickes resolvido;
+-Interface do usuário mudada para um tom mais Adequado;
+-Removido aba Programas ->  ̶A̶t̶u̶a̶l̶i̶z̶a̶ç̶ã̶o̶;
+-Não mostraremos mais atualizações passadas, apenas Novas;
+-Removido set de Clickers e trocado por um Clicker Infinite
+
+Adicionado:
+
+-Novas Linguages:Francês e Inglês;
+
+Atualizações
+
+Version 0.3
+
+Adicionado
+
+-Aba Keyboard em Opções,Agora você podera mudar as teclas de ação de clicker
+-Agora é possivel pausar o clicker
+-Agora é possivel startar o clicker
+-Agora é possivel ver o tutorial de MouseTempo
+
+Mudanças:
+
+-Removido a aba Informações de Ajuda
+-Agora os tutoriais estarão perto do modo de Clicker que for usar.
+Isso para facilitar o modo de entendimento, futuramente talvez
+Estaremos a colocar novamente a aba Ajuda.
+
+
+Version 0.2
+-*Super Atualização*-
+
+Mudanças:
+-Bugs Consertados.
+-Mudado aba Sobre para Atualizações
+-Novo modo de Organização de Atualizações
+
+Adcionado:
+-Barra para voltar ao menu,
+-Barra para informações e tutoriais,
+-Modo de status para mudar o tempo de click
+-Adicionado a aba Atualizações: uma aba HotFix
+serve para dizer com mais detalhes quais bugs foram consertados
+Aprimorado:
+-Agora pode Cancelar o clicker
+
+Version 0.1.2
+Mudanças:  Conserto de bugs.
+Adicionado:  Barra de status
+Aprimoramento:  Interface do usuario,
+Modelo de Atualizações adicionado
+(aba Sobre).
+
+
+Version 0.1.1
+Mudanças : Consertos de Bugs
+Aprimoramento: icones.
+
+
+Remover:imagem azul.
+
+Version 0.1
+Lançamento.
+
+
+hotfix;
+Version: 0.2
+
+-Consertado Bug do programa ficar aberto após ser fechado.
+-Consertado Bug de remover caracteres dentro do espaçamento de números
+-Consertado bug de programa não  iniciar sem escolher uma das alternativas
+-Consertador Bug do Clicker continuar mesmo depois de fechar

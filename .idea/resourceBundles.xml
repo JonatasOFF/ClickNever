@@ -7,6 +7,7 @@
     <custom-resource-bundle>
       <file value="file://$PROJECT_DIR$/src/main/resources/limguages.properties" />
       <file value="file://$PROJECT_DIR$/src/main/resources/limguages_en.properties" />
+      <file value="file://$PROJECT_DIR$/src/main/resources/limguages_fr.properties" />
       <file value="file://$PROJECT_DIR$/src/main/resources/limguages_pt_BR.properties" />
       <base-name>limguages</base-name>
     </custom-resource-bundle>

@@ -23,149 +23,124 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="painelPrincipal" accessibleText="Click Never" maxHeight="300.0" maxWidth="900.0" minHeight="300.0" minWidth="900.0" prefHeight="272.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Logica.Controlador">
+<AnchorPane fx:id="painelPrincipal" accessibleText="Click Never" minHeight="272.0" minWidth="900.0" prefHeight="272.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Logica.Controlador">
     <children>
         <MenuBar focusTraversable="false" prefHeight="28.0" prefWidth="900.0">
             <menus>
-                <Menu mnemonicParsing="false" text="Programa">
+                <Menu mnemonicParsing="false" text="%itemPrograma">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#irAtualizasoes" text="Atualizações" />
-                        <MenuItem fx:id="mouseControler" mnemonicParsing="false" onAction="#irMouseControler" text="MouseControlerAplha" />
+                        <MenuItem mnemonicParsing="false" onAction="#irMouseControler" text="MouseControlerAplha" />
                         <MenuItem mnemonicParsing="false" onAction="#irApaginaInicial" text="Pagina Inicial" />
                     </items>
                     <accelerator>
                         <KeyCodeCombination alt="UP" code="A" control="UP" meta="UP" shift="ANY" shortcut="UP" />
                     </accelerator>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Opções">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#irKeyboard" text="Keyboard" />
-                    </items>
+                <Menu mnemonicParsing="false" text="%ops">
+                    <MenuItem mnemonicParsing="false" onAction="#irKeyboard" text="Keyboard" />
                 </Menu>
             </menus>
         </MenuBar>
-        <Pane fx:id="panelClicker" cache="true" layoutX="1.0" layoutY="27.0" prefHeight="272.0" prefWidth="900.0">
-            <children>
-                <Button fx:id="btAtivaMouse" layoutX="168.0" layoutY="198.0" mnemonicParsing="false" onAction="#executaMouse" text="%ativar" />
-                <TextField fx:id="tfnumeros" layoutX="15.0" layoutY="198.0" pickOnBounds="false" prefHeight="18.0" prefWidth="145.0" />
-                <Label fx:id="iniciando" ellipsisString="" focusTraversable="false" layoutX="718.0" layoutY="60.0" prefHeight="27.0" prefWidth="182.0" snapToPixel="false" textAlignment="CENTER" wrapText="true">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </Label>
-                <Label alignment="CENTER" layoutX="726.0" prefHeight="60.0" prefWidth="172.0" text="%status" underline="true">
-                    <font>
-                        <Font name="Microsoft YaHei UI Light" size="36.0" />
-                    </font>
-                </Label>
-                <VBox layoutX="719.0" layoutY="108.0" prefHeight="122.0" prefWidth="71.0">
-                    <children>
-                        <RadioButton fx:id="oneMs" mnemonicParsing="false" onAction="#avisoVelocidade" prefHeight="30.0" prefWidth="71.0" text="0.001/s">
-                            <toggleGroup>
-                                <ToggleGroup fx:id="groupBotoes" />
-                            </toggleGroup></RadioButton>
-                        <RadioButton fx:id="dezms" mnemonicParsing="false" prefHeight="30.0" text="0.01/s" toggleGroup="$groupBotoes" />
-                        <RadioButton fx:id="cemMs" mnemonicParsing="false" prefHeight="30.0" prefWidth="87.0" text="0.1/s" toggleGroup="$groupBotoes" />
-                        <RadioButton fx:id="milMs" mnemonicParsing="false" prefHeight="30.0" prefWidth="87.0" selected="true" text="1/s" toggleGroup="$groupBotoes" />
-                    </children>
-                </VBox>
-                <TextField fx:id="hours" layoutX="20.0" layoutY="57.0" prefHeight="29.0" prefWidth="28.0" promptText="h" />
-                <Label layoutX="18.0" layoutY="90.0" text="Hours" />
-                <TextField fx:id="min" layoutX="61.0" layoutY="57.0" prefHeight="29.0" prefWidth="32.0" promptText="m" />
-                <Rectangle fx:id="retangulo11" arcHeight="5.0" arcWidth="5.0" height="750.0" layoutX="337.0" layoutY="-245.0" rotate="90.0" stroke="BLACK" strokeType="INSIDE" width="12.0">
-                    <fill>
-                        <RadialGradient centerY="0.5" cycleMethod="REFLECT" radius="0.5">
-                            <stops>
-                                <Stop color="BLACK" />
-                                <Stop color="#8a8eeb" offset="1.0" />
-                            </stops>
-                        </RadialGradient>
-                    </fill>
-                </Rectangle>
-                <Label layoutX="69.0" layoutY="90.0" text="Min" />
-                <TextField fx:id="seg" layoutX="103.0" layoutY="57.0" prefHeight="29.0" prefWidth="32.0" promptText="s" text="10" />
-                <Label layoutX="109.0" layoutY="90.0" text="Seg" />
-                <Button fx:id="btAtivaMouseTempo" layoutX="141.0" layoutY="58.0" mnemonicParsing="false" onAction="#executaMouseTempo" text="%ativar" />
-                <Rectangle fx:id="retangulo111" arcHeight="5.0" arcWidth="5.0" height="500.0" layoutX="707.0" layoutY="-4.0" stroke="BLACK" strokeType="INSIDE" width="12.0">
-                    <fill>
-                        <RadialGradient centerY="0.5" cycleMethod="REFLECT" radius="0.5">
-                            <stops>
-                                <Stop color="BLACK" />
-                                <Stop color="#8a8eeb" offset="1.0" />
-                            </stops>
-                        </RadialGradient>
-                    </fill>
-                </Rectangle>
-                <Label layoutY="-6.0" prefHeight="40.0" prefWidth="260.0" text="MouseClickerTempo" textFill="#0000007e">
-                    <font>
-                        <Font size="26.0" />
-                    </font>
-                </Label>
-                <Label layoutX="-1.0" layoutY="131.0" prefHeight="40.0" prefWidth="238.0" text="Clicker" textFill="#0000007e">
-                    <font>
-                        <Font size="26.0" />
-                    </font>
-                </Label>
-                <Button layoutX="208.0" layoutY="59.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#informacoesTempo" prefHeight="25.0" prefWidth="28.0" text="?" />
-                <Label fx:id="lbClicke" layoutX="323.0" layoutY="138.0" prefHeight="25.0" prefWidth="134.0" text="Tutorial Click" visible="false">
-                    <font>
-                        <Font name="Bell MT" size="19.0" />
-                    </font>
-                </Label>
-                <TextArea fx:id="textoTempo" cache="true" editable="false" layoutX="327.0" layoutY="26.0" prefHeight="97.0" prefWidth="380.0" promptText="TextoExplicando" text="Você terá 3 espaçamentos h,m,s. dependendo do que colocar,&#10;ele dira o tempo de clicker que vai durar.&#10;Exemplo: Se você colocar pra 10s o seu clicker vai ficar clickando 10s&#10;com base na velocidade. Seu clicker vai durar 10s&#10;" visible="false" wrapText="true">
-                    <font>
-                        <Font name="System Bold Italic" size="13.0" />
-                    </font>
-                </TextArea>
-                <Label fx:id="lbTempo" layoutX="327.0" layoutY="3.0" prefHeight="25.0" prefWidth="217.0" text="Tutorial Clicker Tempo" visible="false">
-                    <font>
-                        <Font name="Bell MT" size="19.0" />
-                    </font>
-                </Label>
-                <Button layoutX="232.0" layoutY="199.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#InformacoesClicke" prefHeight="25.0" prefWidth="28.0" text="?" />
-                <TextArea fx:id="textoClicker" cache="true" editable="false" layoutX="327.0" layoutY="161.0" prefHeight="110.0" prefWidth="380.0" promptText="TextoExplicando" text="Ao Colocar um número no espaçamento de &quot;Clicker&quot;, com base no tempo, ele clickara o mesmo número que você colocou.   &#10;&#10;PS: Se colocado na velocidade 0.001/s, a uma chance de você &quot;Perder Clickers&quot;" visible="false" wrapText="true">
-                    <font>
-                        <Font name="System Bold Italic" size="13.0" />
-                    </font>
-                </TextArea>
-                <Label fx:id="lbDuracao" layoutX="26.0" layoutY="34.0" prefHeight="17.0" prefWidth="109.0" text="h : m : s" textAlignment="JUSTIFY" />
-                <ProgressBar fx:id="progressbar" focusTraversable="false" layoutX="719.0" layoutY="263.0" prefHeight="18.0" prefWidth="190.0" progress="0.0" />
-            </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <effect>
-            <DropShadow blurType="GAUSSIAN" color="#096809" height="2.0" radius="1.25" width="5.0" />
-         </effect>
+        <Pane fx:id="panelClicker" cache="true" layoutX="1.0" layoutY="27.0">
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+            <effect>
+                <DropShadow blurType="GAUSSIAN" color="#096809" height="2.0" radius="1.25" width="5.0" />
+            </effect>
+            <Label fx:id="iniciando" ellipsisString="" focusTraversable="false" layoutX="718.0" layoutY="60.0" prefHeight="27.0" prefWidth="182.0" snapToPixel="false" textAlignment="CENTER" wrapText="true">
+                <font>
+                    <Font size="18.0" />
+                </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="726.0" prefHeight="60.0" prefWidth="172.0" text="%status" underline="true">
+                <font>
+                    <Font name="Microsoft YaHei UI Light" size="36.0" />
+                </font>
+            </Label>
+            <VBox layoutX="719.0" layoutY="108.0" prefHeight="122.0" prefWidth="71.0">
+                <children>
+                    <RadioButton fx:id="oneMs" mnemonicParsing="false" onAction="#avisoVelocidade" prefHeight="30.0" prefWidth="71.0" text="0.001/s">
+                        <toggleGroup>
+                            <ToggleGroup fx:id="groupBotoes" />
+                        </toggleGroup>
+                    </RadioButton>
+                    <RadioButton fx:id="dezms" mnemonicParsing="false" prefHeight="30.0" text="0.01/s" toggleGroup="$groupBotoes" />
+                    <RadioButton fx:id="cemMs" mnemonicParsing="false" prefHeight="30.0" prefWidth="87.0" text="0.1/s" toggleGroup="$groupBotoes" />
+                    <RadioButton fx:id="milMs" mnemonicParsing="false" prefHeight="30.0" prefWidth="87.0" selected="true" text="1/s" toggleGroup="$groupBotoes" />
+                </children>
+            </VBox>
+            <TextField fx:id="hours" layoutX="20.0" layoutY="57.0" prefHeight="29.0" prefWidth="28.0" promptText="h" />
+            <Label layoutX="26.0" layoutY="90.0" text="%txtHours" />
+            <TextField fx:id="min" layoutX="61.0" layoutY="57.0" prefHeight="29.0" prefWidth="32.0" promptText="m" />
+            <Rectangle fx:id="retangulo11" arcHeight="5.0" arcWidth="5.0" height="750.0" layoutX="337.0" layoutY="-245.0" rotate="90.0" stroke="BLACK" strokeType="INSIDE" width="12.0">
+                <fill>
+                    <RadialGradient centerY="0.5" cycleMethod="REFLECT" radius="0.5">
+                        <stops>
+                            <Stop color="BLACK" />
+                            <Stop color="#8a8eeb" offset="1.0" />
+                        </stops>
+                    </RadialGradient>
+                </fill>
+            </Rectangle>
+            <Label layoutX="69.0" layoutY="90.0" text="%txtMin" />
+            <TextField fx:id="seg" layoutX="103.0" layoutY="57.0" prefHeight="29.0" prefWidth="28.0" promptText="s" text="10" />
+            <Label layoutX="109.0" layoutY="90.0" text="%txtSeg" />
+            <Button fx:id="btAtivaMouseTempo" layoutX="141.0" layoutY="58.0" mnemonicParsing="false" onAction="#executaMouseTempo" text="%ativar" />
+            <Rectangle fx:id="retangulo111" arcHeight="5.0" arcWidth="5.0" height="500.0" layoutX="707.0" layoutY="-4.0" stroke="BLACK" strokeType="INSIDE" width="12.0">
+                <fill>
+                    <RadialGradient centerY="0.5" cycleMethod="REFLECT" radius="0.5">
+                        <stops>
+                            <Stop color="BLACK" />
+                            <Stop color="#8a8eeb" offset="1.0" />
+                        </stops>
+                    </RadialGradient>
+                </fill>
+            </Rectangle>
+            <Label layoutY="-6.0" prefHeight="40.0" prefWidth="260.0" text="%MouseTempo" textFill="#0000007e">
+                <font>
+                    <Font size="26.0" />
+                </font>
+            </Label>
+            <Label layoutX="-1.0" layoutY="131.0" prefHeight="40.0" prefWidth="238.0" text="Clicker Infinite" textFill="#0000007e">
+                <font>
+                    <Font size="26.0" />
+                </font>
+            </Label>
+            <Button layoutX="208.0" layoutY="59.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#informacoesTempo" prefHeight="25.0" prefWidth="28.0" text="?" />
+            <Label fx:id="lbClicke" layoutX="323.0" layoutY="138.0" prefHeight="25.0" prefWidth="134.0" text="Tutorial Click" visible="false">
+                <font>
+                    <Font name="Bell MT" size="19.0" />
+                </font>
+            </Label>
+            <TextArea fx:id="textoTempo" cache="true" editable="false" layoutX="327.0" layoutY="26.0" prefHeight="97.0" prefWidth="380.0" promptText="TextoExplicando" text="Você terá 3 espaçamentos h,m,s. dependendo do que colocar,&#10;ele dira o tempo de clicker que vai durar.&#10;Exemplo: Se você colocar pra 10s o seu clicker vai ficar clickando 10s&#10;com base na velocidade. Seu clicker vai durar 10s&#10;" visible="false" wrapText="true">
+                <font>
+                    <Font name="System Bold Italic" size="13.0" />
+                </font>
+            </TextArea>
+            <Label fx:id="lbTempo" layoutX="327.0" layoutY="3.0" prefHeight="25.0" prefWidth="217.0" text="Tutorial Clicker Tempo" visible="false">
+                <font>
+                    <Font name="Bell MT" size="19.0" />
+                </font>
+            </Label>
+            <Button layoutX="246.0" layoutY="192.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#InformacoesClicke" prefHeight="25.0" prefWidth="28.0" text="?" />
+            <TextArea fx:id="textoClicker" cache="true" editable="false" layoutX="323.0" layoutY="137.0" prefHeight="60.0" prefWidth="380.0" promptText="TextoExplicando" text="&#10;" wrapText="true">
+                <font>
+                    <Font name="System Bold Italic" size="13.0" />
+                </font>
+            </TextArea>
+            <Label fx:id="lbDuracao" layoutX="26.0" layoutY="34.0" prefHeight="17.0" prefWidth="109.0" text="h : m : s" textAlignment="JUSTIFY" />
+            <ProgressBar fx:id="progressbar" focusTraversable="false" layoutX="718.0" layoutY="230.0" prefHeight="18.0" prefWidth="189.0" progress="0.0" />
         </Pane>
-        <Pane fx:id="panelSobre" layoutX="1.0" layoutY="28.0" prefHeight="272.0" prefWidth="900.0" visible="false">
-            <children>
-                <TextArea fx:id="taTextoSobre" editable="false" layoutY="60.0" prefHeight="212.0" prefWidth="450.0" promptText="textinformation" text="Atualizações&#10;&#10;Version 0.3&#10;&#10;Adicionado&#10;&#10;-Aba Keyboard em Opções,Agora você podera mudar as teclas de ação de clicker&#10;-Agora é possivel pausar o clicker&#10;-Agora é possivel startar o clicker&#10;-Agora é possivel ver o tutorial de MouseTempo&#10;&#10;Mudanças:&#10;&#10;-Removido a aba Informações de Ajuda&#10;-Agora os tutoriais estarão perto do modo de Clicker que for usar.&#10;Isso para facilitar o modo de entendimento, futuramente talvez&#10;Estaremos a colocar novamente a aba Ajuda.&#10;&#10;Mudanças:&#10;&#10;-Removido a aba Informações de Ajuda&#10;-Agora os tutoriais estarão perto do modo de Clicker que for usar.&#10;Isso para facilitar o modo de entendimento, futuramente talvez&#10;Estaremos a colocar novamente a aba Ajuda.&#10;&#10;&#10;Version 0.2&#10;-*Super Atualização*-&#10;&#10;Mudanças:&#10;-Bugs Consertados.&#10;-Mudado aba Sobre para Atualizações&#10;-Novo modo de Organização de Atualizações&#10;&#10;Adcionado: &#10;-Barra para voltar ao menu,&#10;-Barra para informações e tutoriais,&#10;-Modo de status para mudar o tempo de click &#10;-Adicionado a aba Atualizações: uma aba HotFix&#10;serve para dizer com mais detalhes quais bugs foram consertados&#10;Aprimorado:&#10;-Agora pode Cancelar o clicker&#10;&#10;*Graças a nossos Designs preguiçosos e mal pagos,&#10;retiramos algumas imagems e o icone. Na proxima&#10;versão novos icones irão aparecer*&#10;&#10;Version 0.1.2&#10;Mudanças:  Conserto de bugs.&#10;Adicionado:  Barra de status&#10;Aprimoramento:  Interface do usuario,&#10;Modelo de Atualizações adicionado&#10;(aba Sobre).&#10;&#10;&#10;Version 0.1.1&#10;Mudanças : Consertos de Bugs&#10;Aprimoramento: icones.&#10;&#10;&#10;Remover:imagem azul.&#10;&#10;Version 0.1&#10;Lançamento.">
-                    <font>
-                        <Font name="Arial Black" size="12.0" />
-                    </font></TextArea>
-                <TextArea editable="false" layoutX="450.0" layoutY="60.0" prefHeight="212.0" prefWidth="450.0" text="Version: 0.2 &#10;&#10;-Consertado Bug do programa ficar aberto após ser fechado.&#10;-Consertado Bug de remover caracteres dentro do espaçamento de números&#10;-Consertado bug de programa não  iniciar sem escolher uma das alternativas&#10;-Consertador Bug do Clicker continuar mesmo depois de fechar&#10;" />
-                <Text layoutX="450.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hot Fix" textAlignment="CENTER" wrappingWidth="450.0000086891814">
-                    <font>
-                        <Font size="48.0" />
-                    </font>
-                </Text>
-                <Text layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Updates" textAlignment="CENTER" wrappingWidth="450.0000086891814">
-                    <font>
-                        <Font size="48.0" />
-                    </font>
-                </Text>
-            </children>
-        </Pane>
-        <Pane fx:id="MouseControler" layoutX="1.0" layoutY="27.0" prefHeight="272.0" prefWidth="900.0" visible="false" />
-        <Pane fx:id="KeyboardMenu" layoutY="28.0" prefHeight="272.0" prefWidth="900.0" visible="false">
+        <Pane fx:id="MouseControler" layoutX="1.0" layoutY="27.0" visible="false" />
+        <Pane fx:id="KeyboardMenu" layoutY="28.0" visible="false">
             <children>
                 <TextField fx:id="teclaStop" layoutX="14.0" layoutY="49.0" prefHeight="29.0" prefWidth="28.0" text="Z" />
-                <Text layoutX="60.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Parar" wrappingWidth="158.13671875" />
+                <Text layoutX="60.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%txtParar" wrappingWidth="158.13671875" />
                 <TextField fx:id="pausar" layoutX="14.0" layoutY="89.0" prefHeight="29.0" prefWidth="28.0" text="X" />
                 <TextField fx:id="comeca" layoutX="14.0" layoutY="129.0" prefHeight="29.0" prefWidth="28.0" text="S" />
-                <Text layoutX="60.0" layoutY="148.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Começa" wrappingWidth="158.13671875" />
-                <Text layoutX="60.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pausa/Continua" wrappingWidth="158.13671875" />
+                <Text layoutX="60.0" layoutY="148.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%txtComeca" wrappingWidth="158.13671875" />
+                <Text layoutX="60.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%txtPausa/Continue" wrappingWidth="158.13671875" />
                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9cb5ff" height="287.0" layoutX="438.0" stroke="BLACK" strokeType="INSIDE" width="12.0" />
                 <Text layoutX="39.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MouseClicker" textAlignment="CENTER" wrappingWidth="358.0000126361847">
                     <font>
@@ -182,27 +157,27 @@
                         <Font size="15.0" />
                     </font>
                 </Text>
-                <CheckBox fx:id="ctrl" layoutX="305.0" layoutY="55.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="56.0" selected="true" text="Ctrl">
+                <CheckBox fx:id="ctrl" layoutX="305.0" layoutY="54.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="56.0" selected="true" text="Ctrl">
                     <font>
                         <Font name="Apple Braille" size="14.0" />
                     </font>
                 </CheckBox>
-                <Label fx:id="lbErrorPausa" layoutX="156.0" layoutY="93.0" text="Error" textFill="RED" visible="false">
+                <Label fx:id="lbErrorPausa" layoutX="173.0" layoutY="93.0" prefHeight="21.0" prefWidth="56.0" text="%txtError" textFill="RED" visible="false">
                     <font>
                         <Font size="15.0" />
                     </font>
                 </Label>
-                <Label fx:id="lbErrorComeca" layoutX="113.0" layoutY="133.0" text="Error" textFill="RED" visible="false">
+                <Label fx:id="lbErrorComeca" layoutX="113.0" layoutY="133.0" text="%txtError" textFill="RED" visible="false">
                     <font>
                         <Font size="15.0" />
                     </font>
                 </Label>
-                <Label fx:id="lbErrorPara" layoutX="113.0" layoutY="54.0" text="Error" textFill="RED" visible="false">
+                <Label fx:id="lbErrorPara" layoutX="113.0" layoutY="54.0" text="%txtError" textFill="RED" visible="false">
                     <font>
                         <Font size="15.0" />
                     </font>
                 </Label>
-                <CheckBox fx:id="cbTempoDeClicker" layoutX="305.0" layoutY="83.0" mnemonicParsing="false" selected="true" text="Tempo de Clicker">
+                <CheckBox fx:id="cbTempoDeClicker" layoutX="305.0" layoutY="83.0" mnemonicParsing="false" selected="true" text="%txtTempodeclicker">
                     <font>
                         <Font size="14.0" />
                     </font>
@@ -211,13 +186,13 @@
                 <CheckBox layoutX="120.0" layoutY="186.0" mnemonicParsing="false" text="CheckBox" visible="false" />
                 <CheckBox layoutX="42.0" layoutY="210.0" mnemonicParsing="false" text="CheckBox" visible="false" />
                 <TextField fx:id="tfTempoDeClicker" layoutX="292.0" layoutY="172.0" text="5" />
-                <Label fx:id="lbTempoDeClicker" layoutX="207.0" layoutY="177.0" text="Começa em">
+                <Label fx:id="lbTempoDeClicker" layoutX="207.0" layoutY="177.0" text="%txtComecaEm">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <Button layoutX="22.0" layoutY="227.0" mnemonicParsing="false" onAction="#limparDados" text="Resetar" />
-                <Button layoutX="87.0" layoutY="225.0" mnemonicParsing="false" onAction="#informacaoReseta" prefHeight="27.0" prefWidth="28.0" text="?" />
+                <Button layoutX="14.0" layoutY="227.0" mnemonicParsing="false" onAction="#limparDados" text="%txtReseta" />
+                <Button layoutX="106.0" layoutY="226.0" mnemonicParsing="false" onAction="#informacaoReseta" prefHeight="27.0" prefWidth="28.0" text="?" />
             </children></Pane>
     </children>
 </AnchorPane>

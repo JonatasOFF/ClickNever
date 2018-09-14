@@ -6,10 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-import java.util.Locale;
 import java.util.ResourceBundle;
+
 
 /**
  * @Author: Jonatas De Oliveira Ferreira

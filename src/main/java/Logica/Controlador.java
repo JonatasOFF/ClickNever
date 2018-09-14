@@ -17,7 +17,6 @@ import org.jnativehook.keyboard.NativeKeyListener;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.io.*;
-import java.lang.management.GarbageCollectorMXBean;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -58,6 +57,8 @@ public class Controlador implements Initializable {
 
     private boolean abertoTempo;
 
+    private final static String language = System.getProperty("user.language");
+
     private boolean abertoClicker;
 
     private boolean jaExecutou = false;
@@ -88,6 +89,15 @@ public class Controlador implements Initializable {
         return tempoDeClicker;
     }
 
+
+    private String comecaEm;
+
+    private String pausaEm;
+
+    private String andamentoEm;
+
+    private String fimDaExecucao;
+
     private String getListaSave() {
         //hora,minuto,segundo,numeroClicker,tempoComeca,teclaStop,pausa/continua,comeca,one,dez,cem,mil,ctrl,isTempoDeClicker
         return hours.getText() +
@@ -95,8 +105,6 @@ public class Controlador implements Initializable {
                 min.getText() +
                 "," +
                 seg.getText() +
-                "," +
-                tfnumeros.getText() +
                 "," +
                 tfTempoDeClicker.getText() +
                 "," +
@@ -118,7 +126,6 @@ public class Controlador implements Initializable {
                 "," +
                 cbTempoDeClicker.isSelected();
     }
-
 
     void setPodeExecutarClicke(boolean podeExecutarClicke) {
         this.podeExecutarClicke = podeExecutarClicke;
@@ -183,13 +190,7 @@ public class Controlador implements Initializable {
     @FXML
     private Pane MouseControler;
     @FXML
-    private TextField tfnumeros;
-    @FXML
     private Pane panelClicker;
-    @FXML
-    private Pane panelSobre;
-    @FXML
-    public TextArea taTextoSobre;
     @FXML
     public TextArea textoClicker;
     @FXML
@@ -197,27 +198,9 @@ public class Controlador implements Initializable {
 
     @FXML
     private void irApaginaInicial() {
-        panelSobre.setVisible(false);
         MouseControler.setVisible(false);
         KeyboardMenu.setVisible(false);
         panelClicker.setVisible(true);
-    }
-
-    @FXML
-    private void irAtualizasoes() {
-        panelClicker.setVisible(false);
-        MouseControler.setVisible(false);
-        KeyboardMenu.setVisible(false);
-        panelSobre.setVisible(true);
-
-    }
-
-    @FXML
-    private void irKeyboard() {
-        panelClicker.setVisible(false);
-        MouseControler.setVisible(false);
-        panelSobre.setVisible(false);
-        KeyboardMenu.setVisible(true);
     }
 
     /**
@@ -226,89 +209,13 @@ public class Controlador implements Initializable {
      */
     @FXML
     void irMouseControler() {
-//        panelClicker.setVisible(false);
-//        panelSobre.setVisible(false);
-//        KeyboardMenu.setVisible(false);
-//        //Toolkit tk = Toolkit.getDefaultToolkit();
-//        //Dimension d = tk.getScreenSize();
-//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//        alert.setTitle("Em breve...");
-//        //alert.setHeight(d.height - d.height/2);
-//        //alert.setWidth(d.width - d.width/2);
-//        alert.setHeaderText("Esse sistema por enquanto está em fase Alpha");
-//        alert.setContentText("Não nos responsabilizamos de erros,bugs ou seja lá o que você encontrar aqui");
-//        alert.show();
-//        //Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-//        MouseControler.setVisible(true);
     }
 
     @FXML
-    private void avisoVelocidade() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Aviso");
-        alert.setHeaderText("Aviso");
-        alert.setContentText("Essa opção pode trazer Perda de clickes");
-        alert.show();
-    }
-
-    /**
-     * Modo de execução do mouse
-     * serve para clickar automaticamente
-     */
-    @FXML
-    void executaMouse() {
-        if (!jaExecutou) {
-            jaExecutou = true;
-            if (!(pausar.getText().equals(teclaStop.getText()) || teclaStop.getText().equals(comeca.getText()) || comeca.getText().equals(pausar.getText()))) {
-                btAtivaMouseTempo.setCancelButton(false);
-                btAtivaMouse.setCancelButton(false);
-                cb.espera(() -> {
-                    try {
-                        pegaValores();
-                        //interface que faz aparecer
-                        Platform.runLater(() -> iniciando.setText("Em andamento..."));
-                            executaclicker(vezes);
-                            jaExecutou = false;
-                    } catch (InterruptedException | AWTException e) {
-                        e.printStackTrace();
-                    }
-                });
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.show();
-                alert.setTitle("Error");
-                alert.setHeaderText("Existem letras iguais ou faltam letras");
-                alert.setContentText("Por favor acessar Opções -> Keyboard, e Resolver os erros");
-                jaExecutou = false;
-            }
-        }
-    }
-
-    @FXML
-    public void informacaoReseta() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.show();
-        alert.setTitle("Reset");
-        alert.setContentText("Lembre-se. Todos os dados salvos serão resetados");
-        alert.setHeaderText("Aqui você reseta todas as suas informações");
-    }
-
-    @FXML
-    void limparDados() {
-        hours.setText("");
-        min.setText("");
-        seg.setText("");
-        tfnumeros.setText("");
-        tfTempoDeClicker.setText("5");
-        teclaStop.setText("Z");
-        pausar.setText("X");
-        comeca.setText("S");
-        oneMs.setSelected(false);
-        dezms.setSelected(false);
-        cemMs.setSelected(false);
-        milMs.setSelected(true);
-        ctrl.setSelected(true);
-        cbTempoDeClicker.setSelected(true);
+    private void irKeyboard() {
+        panelClicker.setVisible(false);
+        MouseControler.setVisible(false);
+        KeyboardMenu.setVisible(true);
     }
 
     @FXML
@@ -338,6 +245,189 @@ public class Controlador implements Initializable {
     }
 
     @FXML
+    public void informacaoReseta() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.show();
+        switch (language) {
+            case("pt") :
+                alert.setTitle("Reset");
+                alert.setContentText("Lembre-se se. Todos os dados salvos serão redefinidos");
+                alert.setHeaderText("Aqui você reseta todas as suas informações");
+            case("en") :
+                alert.setTitle("Reset");
+                alert.setContentText("Remember if. All saved data will be reset");
+                alert.setHeaderText("Here you resize all your information");
+            case("fr") :
+                alert.setTitle("Reset");
+                alert.setContentText("Rappelez-vous Toutes les données enregistrées seront réinitialisées");
+                alert.setHeaderText("Ici vous redimensionnez toutes vos informations");
+            default:
+                alert.setTitle("Reset");
+                alert.setContentText("Remember if. All saved data will be reset");
+                alert.setHeaderText("Here you resize all your information");
+        }
+    }
+
+    @FXML
+    void limparDados() {
+        hours.setText("");
+        min.setText("");
+        seg.setText("");
+        tfTempoDeClicker.setText("5");
+        teclaStop.setText("Z");
+        pausar.setText("X");
+        comeca.setText("S");
+        oneMs.setSelected(false);
+        dezms.setSelected(false);
+        cemMs.setSelected(false);
+        milMs.setSelected(true);
+        ctrl.setSelected(true);
+        cbTempoDeClicker.setSelected(true);
+    }
+
+    private void lerDados() {
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(System.getProperty("user.dir") + "\\" + "Saves" + "\\" + "save.ini")))) {
+            String linha;
+            while((linha = reader.readLine()) != null) {
+                String[] dados = linha.split(",");
+                System.out.println(Arrays.toString(dados));
+                hours.setText(dados[0]);
+                min.setText(dados[1]);
+                seg.setText(dados[2]);
+                tfTempoDeClicker.setText(dados[3]);
+                teclaStop.setText(dados[4]);
+                pausar.setText(dados[5]);
+                comeca.setText(dados[6]);
+                oneMs.setSelected(Boolean.parseBoolean(dados[7]));
+                dezms.setSelected(Boolean.parseBoolean(dados[8]));
+                cemMs.setSelected(Boolean.parseBoolean(dados[9]));
+                milMs.setSelected(Boolean.parseBoolean(dados[10]));
+                ctrl.setSelected(Boolean.parseBoolean(dados[11]));
+                cbTempoDeClicker.setSelected(Boolean.parseBoolean(dados[12]));
+            }
+        } catch (IOException ignored) {
+        }
+    }
+
+    private void armazenaDados() {
+
+        try {
+            File save = new File(String.valueOf(Files.createDirectories(Paths.get(System.getProperty("user.dir") + "\\" + "Saves"))));
+            FileWriter whiter = new FileWriter(save + "\\" + "save.ini");
+
+            whiter.append(getListaSave());
+
+            whiter.flush();
+            whiter.close();
+        } catch (IOException ignored) {}
+    }
+
+    @FXML
+    private void avisoVelocidade() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.show();
+        switch (language) {
+            case("pt") :
+                alert.setTitle("Aviso");
+                alert.setContentText("Esta opção pode levar a uma perda de Clicker");
+                alert.setHeaderText("Aviso");
+                break;
+            case("en") :
+                alert.setTitle("Notice");
+                alert.setContentText("This opção can lead to a clickthrough");
+                alert.setHeaderText("Notice");
+                break;
+            case("fr") :
+                alert.setTitle("Avis");
+                alert.setContentText("Cette option peut entraîner une perte de clics");
+                alert.setHeaderText("Avis");
+                break;
+            default:
+                alert.setTitle("Notice");
+                alert.setContentText("This opção can lead to a clickthrough");
+                alert.setHeaderText("Notice");
+        }
+    }
+
+    private int velocidadeTempo(String velocidade) {
+        switch (velocidade) {
+            case ("0.001/s"):
+                return 1000;
+            case ("0.01/s"):
+                return 100;
+            case ("0.1/s"):
+                return 10;
+            case ("1/s"):
+                return 1;
+            default:
+                return 1;
+        }
+    }
+
+    private void pegaValores() {
+
+        if (!(seg.getText().equals(""))) {
+            segundos = Integer.parseInt(seg.getText());
+        }
+        if (!(min.getText().equals(""))) {
+            minutos = Integer.parseInt(min.getText());
+        }
+        if (!(hours.getText().equals(""))) {
+            if (horas > 24) {
+                horas = 24;
+            } else {
+                horas = Integer.parseInt(hours.getText());
+            }
+        }
+    }
+
+    private void tempo(int tempo) {
+        int h = tempo / 3600;
+        int m = (tempo % 3600) / 60;
+        int s = (tempo % 3600) % 60;
+        Platform.runLater(() -> lbDuracao.setText(h + " : " + m + " : " + s));
+    }
+
+    private void pauseClicker() throws InterruptedException {
+        if (pausa) {
+            Thread.sleep(3000);
+            if (!podeExecutarClicke) {
+                pausa = false;
+            } else {
+                pauseClicker();
+            }
+        }
+    }
+
+    private void alertKeyboard() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.show();
+        System.out.println(language);
+        switch (language) {
+            case("pt") :
+                alert.setTitle("Error");
+                alert.setContentText("Por favor acesse Opções -> Teclado, e Resolva Erros");
+                alert.setHeaderText("Existem letras iguais ou faltam letras");
+                break;
+            case("en") :
+                alert.setTitle("Error");
+                alert.setContentText("Please access Options -> Keyboard, and Resolve Errors");
+                alert.setHeaderText("There are equal or missing letters");
+                break;
+            case("fr") :
+                alert.setTitle("Erreur");
+                alert.setContentText("Veuillez accéder aux Options -> Clavier et Résoudre les erreurs");
+                alert.setHeaderText("Il y a des lettres égales ou manquantes");
+                break;
+            default:
+                alert.setTitle("Error");
+                alert.setContentText("Please access Options -> Keyboard, and Resolve Errors");
+                alert.setHeaderText("There are equal or missing letters");
+        }
+        jaExecutou = false;
+    }
+
+    @FXML
     private void executaMouseTempo() {
         try {
             if (!jaExecutou) {
@@ -359,119 +449,12 @@ public class Controlador implements Initializable {
                         }
                     });
                 } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.show();
-                    alert.setTitle("Error");
-                    alert.setHeaderText("Existem letras iguais ou faltam letras");
-                    alert.setContentText("Por favor acessar Opções -> Keyboard, e Resolver os erros");
-                    jaExecutou = false;
+                    alertKeyboard();
                 }
             }
         }catch (Exception e) {
             e.printStackTrace();
             jaExecutou = false;
-        }
-    }
-
-    private int velocidadeTempo(String velocidade) {
-        switch (velocidade) {
-            case ("0.001/s"):
-                return 1000;
-            case ("0.01/s"):
-                return 100;
-            case ("0.1/s"):
-                return 10;
-            case ("1/s"):
-                return 1;
-            default:
-                return 1;
-        }
-    }
-
-    private int getNumeros() {
-        if (!tfnumeros.getText().equals("")) {
-            return Integer.parseInt(tfnumeros.getText());
-        } else {
-            return 0;
-        }
-    }
-
-    private void lerDados() {
-        try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(System.getProperty("user.dir") + "\\" + "Saves" + "\\" + "save.ini")))) {
-            String linha;
-            while((linha = reader.readLine()) != null) {
-                String[] dados = linha.split(",");
-                hours.setText(dados[0]);
-                min.setText(dados[1]);
-                seg.setText(dados[2]);
-                tfnumeros.setText(dados[3]);
-                tfTempoDeClicker.setText(dados[4]);
-                teclaStop.setText(dados[5]);
-                pausar.setText(dados[6]);
-                comeca.setText(dados[7]);
-                oneMs.setSelected(Boolean.parseBoolean(dados[8]));
-                dezms.setSelected(Boolean.parseBoolean(dados[9]));
-                cemMs.setSelected(Boolean.parseBoolean(dados[10]));
-                milMs.setSelected(Boolean.parseBoolean(dados[11]));
-                ctrl.setSelected(Boolean.parseBoolean(dados[12]));
-                cbTempoDeClicker.setSelected(Boolean.parseBoolean(dados[13]));
-            }
-        } catch (IOException ignored) {
-        }
-    }
-
-    private void armazenaDados() {
-
-        try {
-            File save = new File(String.valueOf(Files.createDirectories(Paths.get(System.getProperty("user.dir") + "\\" + "Saves"))));
-            FileWriter whiter = new FileWriter(save + "\\" + "save.ini");
-
-            whiter.append(getListaSave());
-
-            whiter.flush();
-            whiter.close();
-        } catch (IOException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.show();
-            alert.setTitle("ERRO DO ARMAZENAMENTO");
-            alert.setContentText(System.getProperty("user.dir"));
-            e.printStackTrace();
-        }
-
-    }
-
-    private void pegaValores() {
-        if (!(seg.getText().equals(""))) {
-            segundos = Integer.parseInt(seg.getText());
-        }
-        if (!(min.getText().equals(""))) {
-            minutos = Integer.parseInt(min.getText());
-        }
-        if (!(hours.getText().equals(""))) {
-            if (horas > 24) {
-                horas = 24;
-            } else {
-                horas = Integer.parseInt(hours.getText());
-            }
-        }
-        vezes = getNumeros();
-    }
-
-    private void tempo(int tempo) {
-        int h = tempo / 3600;
-        int m = (tempo % 3600) / 60;
-        int s = (tempo % 3600) % 60;
-        Platform.runLater(() -> lbDuracao.setText(h + " : " + m + " : " + s));
-    }
-
-    private void pauseClicker() throws InterruptedException {
-        if (pausa) {
-            Thread.sleep(3000);
-            if (!podeExecutarClicke) {
-                pausa = false;
-            } else {
-                pauseClicker();
-            }
         }
     }
 
@@ -504,12 +487,28 @@ public class Controlador implements Initializable {
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.show();
-                alert.setTitle("Error");
-                alert.setContentText("Não a números a serem executados");
+                System.out.println(language);
+                switch (language) {
+                    case("pt") :
+                        alert.setTitle("Error");
+                        alert.setContentText("Não a números a serem executados");
+                        break;
+                    case("en") :
+                        alert.setTitle("Error");
+                        alert.setContentText("Not the numbers to run");
+                        break;
+                    case("fr") :
+                        alert.setTitle("Erreur");
+                        alert.setContentText("Pas les nombres à courir");
+                        break;
+                    default:
+                        alert.setTitle("Error");
+                        alert.setContentText("Not the numbers to run");
+                }
             });
         }
         Platform.runLater(() -> {
-            iniciando.setText("Fim da execução");
+            iniciando.setText(fimDaExecucao);
             lbDuracao.setText("0 : 0 : 0");
             progressbar.setProgress(0);
             progressbar.indeterminateProperty();
@@ -536,13 +535,11 @@ public class Controlador implements Initializable {
             retiraNumerosClicker();
         }
 
+        /**
+         * Pedir ajuda por irmão pra ver se tem uma maneira melhor de fazer isso
+         *
+         */
         void retiraNumerosClicker() {
-            tfnumeros.textProperty().addListener((observable, oldValue, newValue) -> {
-                if (!newValue.matches("\\d*")) {
-                    tfnumeros.setText(newValue.replaceAll("[^\\d]", ""));
-                }
-                armazenaDados();
-            });
             hours.textProperty().addListener((observable, oldValue, newValue) -> {
                 if (!newValue.matches("\\d*")) {
                     hours.setText(newValue.replaceAll("[^\\d]", ""));
@@ -573,8 +570,7 @@ public class Controlador implements Initializable {
                     if (!newValue.matches("\\w")) {
                         teclaStop.setText(teclaStop.getText(1, 2));
                     }
-                } catch (Exception ignore) {
-                }
+                } catch (Exception ignore) {}
                 if (teclaStop.getText().equals(comeca.getText())) {
                     lbErrorPara.setVisible(true);
                 }
@@ -637,8 +633,7 @@ public class Controlador implements Initializable {
                     if (!newValue.matches("\\w")) {
                         pausar.setText(pausar.getText(1, 2));
                     }
-                } catch (Exception ignore) {
-                }
+                } catch (Exception ignore) {}
                 if (pausar.getText().equals(teclaStop.getText())) {
                     lbErrorPausa.setVisible(true);
                 }
@@ -723,10 +718,10 @@ public class Controlador implements Initializable {
             if (ctrlConfirma(letra.equals(pausar.getText()), ctrlOn)) {
                 if (!pausa) {
                     pausa = true;
-                    Platform.runLater(() -> iniciando.setText("Pausado"));
+                    Platform.runLater(() -> iniciando.setText(pausaEm));
                 } else {
                     pausa = false;
-                    Platform.runLater(() -> iniciando.setText("Em andamento..."));
+                    Platform.runLater(() -> iniciando.setText(andamentoEm));
                 }
             }
             if (ctrlConfirma(letra.equals(teclaStop.getText()), ctrlOn)) {
@@ -766,7 +761,7 @@ public class Controlador implements Initializable {
                     setPodeExecutarClicke(true);
                     for (int i = getTfTempoDeClicker(); 0 <= i; i--) {
                         try {
-                            String comeca = "Começa em " +
+                            String comeca = comecaEm +
                                     String.valueOf((double) i) +
                                     "s";
                             Platform.runLater(() -> iniciando.setText(comeca));
@@ -791,6 +786,7 @@ public class Controlador implements Initializable {
 //        System.out.println(location.getPath());
 //        System.out.println(resources.getKeys());
 //        System.out.println(resources.getLocale());
+        System.out.println(language);
 
         new detecta().start();
         lerDados();
@@ -814,6 +810,31 @@ public class Controlador implements Initializable {
             tfTempoDeClicker.setOpacity(0.50);
             tfTempoDeClicker.setEditable(false);
             lbTempoDeClicker.setOpacity(0.50);
+        }
+        switch (language) {
+            case("pt") :
+                comecaEm = "Começa em ";
+                pausaEm = "Pausar";
+                fimDaExecucao = "Fim da Execução";
+                andamentoEm = "Em andamento...";
+                break;
+            case("en") :
+                comecaEm = "Starts at ";
+                pausaEm = "Pause";
+                fimDaExecucao = "End of Execution";
+                andamentoEm = "In progress...";
+                break;
+            case("fr") :
+                comecaEm = "Commence à ";
+                pausaEm = "Pause";
+                fimDaExecucao = "Fin de l'exécution";
+                andamentoEm ="En cours...";
+                break;
+            default:
+                comecaEm = "Starts at ";
+                pausaEm = "Pause";
+                fimDaExecucao = "End of Execution";
+                andamentoEm = "In progress...";
         }
     }
 }
