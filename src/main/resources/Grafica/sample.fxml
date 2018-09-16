@@ -41,7 +41,7 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <Pane fx:id="panelClicker" cache="true" layoutX="1.0" layoutY="27.0" prefHeight="272.0" prefWidth="900.0" visible="false">
+        <Pane fx:id="panelClicker" cache="true" layoutX="1.0" layoutY="27.0" prefHeight="272.0" prefWidth="900.0">
             <opaqueInsets>
                 <Insets />
             </opaqueInsets>
@@ -137,7 +137,7 @@
          <Button layoutX="77.0" layoutY="192.0" mnemonicParsing="false" onAction="#stopClickerInfinite" text="Stop" />
         </Pane>
         <Pane fx:id="MouseControler" layoutX="1.0" layoutY="27.0" visible="false" />
-        <Pane fx:id="KeyboardMenu" layoutY="28.0" prefHeight="272.0" prefWidth="900.0">
+        <Pane fx:id="KeyboardMenu" layoutY="28.0" prefHeight="272.0" prefWidth="900.0" visible="false">
             <children>
                 <TextField fx:id="teclaStop" layoutX="14.0" layoutY="49.0" prefHeight="29.0" prefWidth="28.0" text="Z" />
                 <Text layoutX="60.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%txtParar" wrappingWidth="158.13671875" />
