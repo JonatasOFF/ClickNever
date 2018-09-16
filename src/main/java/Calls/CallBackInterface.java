@@ -1,5 +1,7 @@
 package Calls;
 
+import java.awt.*;
+
 public interface CallBackInterface {
-    void onFinish();
+    void onFinish() throws AWTException;
 }

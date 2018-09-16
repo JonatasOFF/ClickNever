@@ -2,6 +2,7 @@ package Logica;
 
 import Calls.CallBackInterface;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -17,6 +18,7 @@ import org.jnativehook.keyboard.NativeKeyListener;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.io.*;
+import java.lang.annotation.Documented;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -24,17 +26,19 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static javafx.scene.control.ProgressIndicator.INDETERMINATE_PROGRESS;
+
 
 /**
  * @Author: Jonatas De Oliveira Ferreira
  * @Version: 0.4
  *
- * Coisas a se fazer Version 0.4:
+ * @CoisasParaFazer:
+ * -null-
  *
- * Mudar a lingua para PT e EUA
- * Entrar em contato com Design para mudar interface
- * Verificar se é possivel dar uma introdução a *ClickerControler*
- * Fazer documentação.
+ * @ATALHOS:
+ * @*LD* : Leitura de dados (gravar,ler,resetar)
+ *
  *
  */
 public class Controlador implements Initializable {
@@ -57,11 +61,13 @@ public class Controlador implements Initializable {
 
     private boolean abertoTempo;
 
-    private final static String language = System.getProperty("user.language");
+    private final static String LANGUAGE = System.getProperty("user.language");
 
     private boolean abertoClicker;
 
     private boolean jaExecutou = false;
+
+    private boolean pauseExecuter = false;
 
     private int getTfTempoDeClicker() {
         if (tfTempoDeClicker.getText().equals("")) {
@@ -89,6 +95,9 @@ public class Controlador implements Initializable {
         return tempoDeClicker;
     }
 
+    private String tutorialClickerTempo;
+
+    private String tutorialClickerInfinite;
 
     private String comecaEm;
 
@@ -132,6 +141,7 @@ public class Controlador implements Initializable {
     }
 
     private void setProgressbar(double value) {
+        progressbar.indeterminateProperty();
         progressbar.setProgress(value);
     }
 
@@ -153,8 +163,6 @@ public class Controlador implements Initializable {
     public Label lbTempoDeClicker;
     @FXML
     public TextField teclaStop;
-    @FXML
-    public Button btAtivaMouse;
     @FXML
     public Button btAtivaMouseTempo;
     @FXML
@@ -195,6 +203,33 @@ public class Controlador implements Initializable {
     public TextArea textoClicker;
     @FXML
     public Label lbClicke;
+
+    @FXML
+    private void avisoVelocidade() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.show();
+        switch (LANGUAGE) {
+            case("pt") :
+                alert.setTitle("Aviso");
+                alert.setContentText("Esta opção pode levar a uma perda de Clicker");
+                alert.setHeaderText("Aviso");
+                break;
+            case("en") :
+                alert.setTitle("Notice");
+                alert.setContentText("This opção can lead to a clickthrough");
+                alert.setHeaderText("Notice");
+                break;
+            case("fr") :
+                alert.setTitle("Avis");
+                alert.setContentText("Cette option peut entraîner une perte de clics");
+                alert.setHeaderText("Avis");
+                break;
+            default:
+                alert.setTitle("Notice");
+                alert.setContentText("This opção can lead to a clickthrough");
+                alert.setHeaderText("Notice");
+        }
+    }
 
     @FXML
     private void irApaginaInicial() {
@@ -248,25 +283,30 @@ public class Controlador implements Initializable {
     public void informacaoReseta() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.show();
-        switch (language) {
+        switch (LANGUAGE) {
             case("pt") :
                 alert.setTitle("Reset");
                 alert.setContentText("Lembre-se se. Todos os dados salvos serão redefinidos");
                 alert.setHeaderText("Aqui você reseta todas as suas informações");
+                break;
             case("en") :
-                alert.setTitle("Reset");
                 alert.setContentText("Remember if. All saved data will be reset");
                 alert.setHeaderText("Here you resize all your information");
+                break;
             case("fr") :
                 alert.setTitle("Reset");
                 alert.setContentText("Rappelez-vous Toutes les données enregistrées seront réinitialisées");
                 alert.setHeaderText("Ici vous redimensionnez toutes vos informations");
+                break;
             default:
                 alert.setTitle("Reset");
                 alert.setContentText("Remember if. All saved data will be reset");
                 alert.setHeaderText("Here you resize all your information");
+                break;
         }
     }
+
+    //<LEITURA DE DADOS>*LD*
 
     @FXML
     void limparDados() {
@@ -322,32 +362,7 @@ public class Controlador implements Initializable {
         } catch (IOException ignored) {}
     }
 
-    @FXML
-    private void avisoVelocidade() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.show();
-        switch (language) {
-            case("pt") :
-                alert.setTitle("Aviso");
-                alert.setContentText("Esta opção pode levar a uma perda de Clicker");
-                alert.setHeaderText("Aviso");
-                break;
-            case("en") :
-                alert.setTitle("Notice");
-                alert.setContentText("This opção can lead to a clickthrough");
-                alert.setHeaderText("Notice");
-                break;
-            case("fr") :
-                alert.setTitle("Avis");
-                alert.setContentText("Cette option peut entraîner une perte de clics");
-                alert.setHeaderText("Avis");
-                break;
-            default:
-                alert.setTitle("Notice");
-                alert.setContentText("This opção can lead to a clickthrough");
-                alert.setHeaderText("Notice");
-        }
-    }
+    //<\LEITURA DE DADOS>*LD*
 
     private int velocidadeTempo(String velocidade) {
         switch (velocidade) {
@@ -393,6 +408,7 @@ public class Controlador implements Initializable {
             Thread.sleep(3000);
             if (!podeExecutarClicke) {
                 pausa = false;
+                Platform.runLater(() -> iniciando.setText(andamentoEm));
             } else {
                 pauseClicker();
             }
@@ -402,8 +418,8 @@ public class Controlador implements Initializable {
     private void alertKeyboard() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.show();
-        System.out.println(language);
-        switch (language) {
+        System.out.println(LANGUAGE);
+        switch (LANGUAGE) {
             case("pt") :
                 alert.setTitle("Error");
                 alert.setContentText("Por favor acesse Opções -> Teclado, e Resolva Erros");
@@ -440,10 +456,9 @@ public class Controlador implements Initializable {
                     vezes = (segundos + minTrue + hours);
                     cb.espera(() -> {
                         try {
-                            Platform.runLater(() -> iniciando.setText("Em andamento..."));
+                            Platform.runLater(() -> iniciando.setText(andamentoEm));
                             executaclicker(vezes);
                             jaExecutou = false;
-
                         } catch (AWTException | InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -465,6 +480,7 @@ public class Controlador implements Initializable {
      */
     private void executaclicker(double quantas) throws AWTException, InterruptedException {
         if(quantas != 0) {
+            pauseExecuter = true;
             setPodeExecutarClicke(true);
             Robot robot = new Robot();
             RadioButton radio = (RadioButton) groupBotoes.getSelectedToggle();
@@ -487,8 +503,8 @@ public class Controlador implements Initializable {
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.show();
-                System.out.println(language);
-                switch (language) {
+                System.out.println(LANGUAGE);
+                switch (LANGUAGE) {
                     case("pt") :
                         alert.setTitle("Error");
                         alert.setContentText("Não a números a serem executados");
@@ -515,12 +531,39 @@ public class Controlador implements Initializable {
         });
         Thread.sleep(1000);
         Platform.runLater(() -> {
-            progressbar.setVisible(false);
             iniciando.setVisible(false);
-            btAtivaMouse.setCancelButton(false);
-            btAtivaMouseTempo.setCancelButton(false);
+            pauseExecuter = false;
         });
     }
+
+    @FXML
+    public void clickerInfinite() {
+        if(!jaExecutou) {
+            jaExecutou = true;
+            cb.espera(() -> {
+                Platform.runLater(() -> iniciando.setText("Em andamento..."));
+                while (podeExecutarClicke) {
+                    Robot robotl = new Robot();
+                    RadioButton radio = (RadioButton) groupBotoes.getSelectedToggle();
+                    robotl.mousePress(InputEvent.BUTTON1_MASK);
+                    robotl.mouseRelease(InputEvent.BUTTON1_MASK);
+                    robotl.delay(getVelocidade(radio.getText()));
+                }
+                jaExecutou = false;
+                setPodeExecutarClicke(true);
+                Platform.runLater(() -> iniciando.setText(fimDaExecucao));
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Platform.runLater(() -> iniciando.setVisible(false));
+            });
+        }
+    }
+
+    @FXML
+    public void stopClickerInfinite() {setPodeExecutarClicke(false);}
 
     /**
      * Detectar/Funcionar/Programa Aberto
@@ -706,7 +749,6 @@ public class Controlador implements Initializable {
 
         @Override
         public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-
             //(NativeInputEvent.CTRL_L_MASK & nativeKeyEvent.getKeyCode()) != 0
             String letra = (NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode()));
             System.out.println(letra);
@@ -716,10 +758,10 @@ public class Controlador implements Initializable {
             }
 
             if (ctrlConfirma(letra.equals(pausar.getText()), ctrlOn)) {
-                if (!pausa) {
+                if (!pausa && pauseExecuter) {
                     pausa = true;
                     Platform.runLater(() -> iniciando.setText(pausaEm));
-                } else {
+                } else if (pauseExecuter) {
                     pausa = false;
                     Platform.runLater(() -> iniciando.setText(andamentoEm));
                 }
@@ -728,7 +770,8 @@ public class Controlador implements Initializable {
                 setPodeExecutarClicke(false);
             }
             if (ctrlConfirma(letra.equals(comeca.getText()), ctrlOn)) {
-                executaMouseTempo();
+                setPodeExecutarClicke(true);
+                clickerInfinite();
             }
         }
 
@@ -775,19 +818,17 @@ public class Controlador implements Initializable {
                         }
                     }
                 }
-                listener.onFinish();
+                try {
+                    listener.onFinish();
+                } catch (AWTException e) {
+                    e.printStackTrace();
+                }
             }).start();
         }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        System.out.println(location);
-//        System.out.println(location.getPath());
-//        System.out.println(resources.getKeys());
-//        System.out.println(resources.getLocale());
-        System.out.println(language);
-
         new detecta().start();
         lerDados();
         try {
@@ -811,30 +852,64 @@ public class Controlador implements Initializable {
             tfTempoDeClicker.setEditable(false);
             lbTempoDeClicker.setOpacity(0.50);
         }
-        switch (language) {
+        switch (LANGUAGE) {
             case("pt") :
                 comecaEm = "Começa em ";
                 pausaEm = "Pausar";
                 fimDaExecucao = "Fim da Execução";
                 andamentoEm = "Em andamento...";
+                tutorialClickerInfinite = "ClickerInfinite: serve para um clicker em\n" +
+                        "velocidade já feita pelo usuário e um tempo \n" +
+                        "infinito de clicker. Lembre-se, ele só Start e Stop.\n" +
+                        "Sem Pause.";
+                tutorialClickerTempo = "Você terá 3 espaçamentos h,m,s. dependendo do que colocar,\n" +
+                        "ele dira o tempo de clicker que vai durar.\n" +
+                        "Exemplo: Se você colocar pra 10s o seu clicker vai ficar clickando 10s\n" +
+                        "com base na velocidade. Seu clicker vai durar 10s\n";
                 break;
             case("en") :
                 comecaEm = "Starts at ";
                 pausaEm = "Pause";
                 fimDaExecucao = "End of Execution";
                 andamentoEm = "In progress...";
+                tutorialClickerInfinite = "ClickerInfinite: is for a clicker in\n" +
+                        "speed already made by the user and a\n" +
+                        "infinite clicker. Remember, it only Start and Stop.\n" +
+                        "Without Pause.";
+                tutorialClickerTempo = "You have 3 spacings h, m, s. depending on what to do,\n" +
+                        "the clicker time that will last.\n" +
+                        "Example: If you use 10s your click will be clicking on 10s\n" +
+                        "based on speed. Your clicker will last 10s";
                 break;
             case("fr") :
                 comecaEm = "Commence à ";
                 pausaEm = "Pause";
                 fimDaExecucao = "Fin de l'exécution";
                 andamentoEm ="En cours...";
+                tutorialClickerInfinite = "ClickerInfinite: est pour un clicker dans\n" +
+                        "la vitesse déjà faite par l'utilisateur et une\n" +
+                        "clicker infini. Rappelez-vous que ce n'est que Start and Stop.\n" +
+                        "Sans pause";
+                tutorialClickerInfinite = "Vous avez 3 espacements h, m, s. en fonction de ce qu'il faut faire,\n" +
+                        "le temps de clic qui durera.\n" +
+                        "Exemple: Si vous utilisez 10s, votre clic cliquera sur 10s\n" +
+                        "basé sur la vitesse. Votre clicker durera 10s";
                 break;
             default:
                 comecaEm = "Starts at ";
                 pausaEm = "Pause";
                 fimDaExecucao = "End of Execution";
                 andamentoEm = "In progress...";
+                tutorialClickerInfinite = "ClickerInfinite: is for a clicker in\n" +
+                        "speed already made by the user and a\n" +
+                        "infinite clicker. Remember, it only Start and Stop.\n" +
+                        "Without Pause.";
+                tutorialClickerTempo = "You have 3 spacings h, m, s. depending on what to do,\n" +
+                        "the clicker time that will last.\n" +
+                        "Example: If you use 10s your click will be clicking on 10s\n" +
+                        "based on speed. Your clicker will last 10s";
         }
+        textoClicker.setText(tutorialClickerInfinite);
+        textoTempo.setText(tutorialClickerTempo);
     }
 }

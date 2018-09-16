@@ -23,7 +23,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="painelPrincipal" accessibleText="Click Never" minHeight="272.0" minWidth="900.0" prefHeight="272.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Logica.Controlador">
+<AnchorPane fx:id="painelPrincipal" accessibleText="Click Never" prefHeight="272.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Logica.Controlador">
     <children>
         <MenuBar focusTraversable="false" prefHeight="28.0" prefWidth="900.0">
             <menus>
@@ -41,12 +41,12 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <Pane fx:id="panelClicker" cache="true" layoutX="1.0" layoutY="27.0">
+        <Pane fx:id="panelClicker" cache="true" layoutX="1.0" layoutY="27.0" prefHeight="272.0" prefWidth="900.0" visible="false">
             <opaqueInsets>
                 <Insets />
             </opaqueInsets>
             <effect>
-                <DropShadow blurType="GAUSSIAN" color="#096809" height="2.0" radius="1.25" width="5.0" />
+                <DropShadow blurType="GAUSSIAN" color="#00b100" height="4.25" radius="1.8125" width="5.0" />
             </effect>
             <Label fx:id="iniciando" ellipsisString="" focusTraversable="false" layoutX="718.0" layoutY="60.0" prefHeight="27.0" prefWidth="182.0" snapToPixel="false" textAlignment="CENTER" wrapText="true">
                 <font>
@@ -72,13 +72,14 @@
             </VBox>
             <TextField fx:id="hours" layoutX="20.0" layoutY="57.0" prefHeight="29.0" prefWidth="28.0" promptText="h" />
             <Label layoutX="26.0" layoutY="90.0" text="%txtHours" />
-            <TextField fx:id="min" layoutX="61.0" layoutY="57.0" prefHeight="29.0" prefWidth="32.0" promptText="m" />
+            <TextField fx:id="min" layoutX="65.0" layoutY="56.0" prefHeight="29.0" prefWidth="28.0" promptText="m" />
             <Rectangle fx:id="retangulo11" arcHeight="5.0" arcWidth="5.0" height="750.0" layoutX="337.0" layoutY="-245.0" rotate="90.0" stroke="BLACK" strokeType="INSIDE" width="12.0">
                 <fill>
                     <RadialGradient centerY="0.5" cycleMethod="REFLECT" radius="0.5">
                         <stops>
-                            <Stop color="BLACK" />
-                            <Stop color="#8a8eeb" offset="1.0" />
+                            <Stop color="#000000b2" />
+                            <Stop color="#000000b2" offset="0.6819923371647508" />
+                     <Stop color="#00b100" offset="1.0" />
                         </stops>
                     </RadialGradient>
                 </fill>
@@ -87,15 +88,16 @@
             <TextField fx:id="seg" layoutX="103.0" layoutY="57.0" prefHeight="29.0" prefWidth="28.0" promptText="s" text="10" />
             <Label layoutX="109.0" layoutY="90.0" text="%txtSeg" />
             <Button fx:id="btAtivaMouseTempo" layoutX="141.0" layoutY="58.0" mnemonicParsing="false" onAction="#executaMouseTempo" text="%ativar" />
-            <Rectangle fx:id="retangulo111" arcHeight="5.0" arcWidth="5.0" height="500.0" layoutX="707.0" layoutY="-4.0" stroke="BLACK" strokeType="INSIDE" width="12.0">
-                <fill>
-                    <RadialGradient centerY="0.5" cycleMethod="REFLECT" radius="0.5">
-                        <stops>
-                            <Stop color="BLACK" />
-                            <Stop color="#8a8eeb" offset="1.0" />
-                        </stops>
-                    </RadialGradient>
-                </fill>
+            <Rectangle fx:id="retangulo111" arcHeight="5.0" arcWidth="5.0" height="496.0" layoutX="707.0" stroke="BLACK" strokeType="INSIDE" width="12.0">
+            <fill>
+               <RadialGradient centerY="0.5" cycleMethod="REFLECT" radius="0.5">
+                  <stops>
+                     <Stop color="#000000be" />
+                     <Stop color="#000000be" offset="0.21072796934865878" />
+                     <Stop color="#00b100" offset="1.0" />
+                  </stops>
+               </RadialGradient>
+            </fill>
             </Rectangle>
             <Label layoutY="-6.0" prefHeight="40.0" prefWidth="260.0" text="%MouseTempo" textFill="#0000007e">
                 <font>
@@ -107,7 +109,7 @@
                     <Font size="26.0" />
                 </font>
             </Label>
-            <Button layoutX="208.0" layoutY="59.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#informacoesTempo" prefHeight="25.0" prefWidth="28.0" text="?" />
+            <Button layoutX="203.0" layoutY="58.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#informacoesTempo" prefHeight="25.0" prefWidth="28.0" text="?" />
             <Label fx:id="lbClicke" layoutX="323.0" layoutY="138.0" prefHeight="25.0" prefWidth="134.0" text="Tutorial Click" visible="false">
                 <font>
                     <Font name="Bell MT" size="19.0" />
@@ -123,17 +125,19 @@
                     <Font name="Bell MT" size="19.0" />
                 </font>
             </Label>
-            <Button layoutX="246.0" layoutY="192.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#InformacoesClicke" prefHeight="25.0" prefWidth="28.0" text="?" />
-            <TextArea fx:id="textoClicker" cache="true" editable="false" layoutX="323.0" layoutY="137.0" prefHeight="60.0" prefWidth="380.0" promptText="TextoExplicando" text="&#10;" wrapText="true">
+            <Button layoutX="127.0" layoutY="192.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#InformacoesClicke" prefHeight="25.0" prefWidth="28.0" text="?" />
+            <TextArea fx:id="textoClicker" cache="true" editable="false" layoutX="323.0" layoutY="137.0" prefHeight="60.0" prefWidth="380.0" promptText="TextoExplicando" visible="false" wrapText="true">
                 <font>
                     <Font name="System Bold Italic" size="13.0" />
                 </font>
             </TextArea>
             <Label fx:id="lbDuracao" layoutX="26.0" layoutY="34.0" prefHeight="17.0" prefWidth="109.0" text="h : m : s" textAlignment="JUSTIFY" />
-            <ProgressBar fx:id="progressbar" focusTraversable="false" layoutX="718.0" layoutY="230.0" prefHeight="18.0" prefWidth="189.0" progress="0.0" />
+            <ProgressBar fx:id="progressbar" focusTraversable="false" layoutX="719.0" layoutY="263.0" prefHeight="18.0" prefWidth="189.0" progress="0.0" />
+         <Button layoutX="28.0" layoutY="192.0" mnemonicParsing="false" onAction="#clickerInfinite" text="Start" />
+         <Button layoutX="77.0" layoutY="192.0" mnemonicParsing="false" onAction="#stopClickerInfinite" text="Stop" />
         </Pane>
         <Pane fx:id="MouseControler" layoutX="1.0" layoutY="27.0" visible="false" />
-        <Pane fx:id="KeyboardMenu" layoutY="28.0" visible="false">
+        <Pane fx:id="KeyboardMenu" layoutY="28.0" prefHeight="272.0" prefWidth="900.0">
             <children>
                 <TextField fx:id="teclaStop" layoutX="14.0" layoutY="49.0" prefHeight="29.0" prefWidth="28.0" text="Z" />
                 <Text layoutX="60.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%txtParar" wrappingWidth="158.13671875" />
@@ -141,7 +145,7 @@
                 <TextField fx:id="comeca" layoutX="14.0" layoutY="129.0" prefHeight="29.0" prefWidth="28.0" text="S" />
                 <Text layoutX="60.0" layoutY="148.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%txtComeca" wrappingWidth="158.13671875" />
                 <Text layoutX="60.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%txtPausa/Continue" wrappingWidth="158.13671875" />
-                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9cb5ff" height="287.0" layoutX="438.0" stroke="BLACK" strokeType="INSIDE" width="12.0" />
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9cb5ff" height="287.0" layoutX="455.0" stroke="BLACK" strokeType="INSIDE" width="12.0" />
                 <Text layoutX="39.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MouseClicker" textAlignment="CENTER" wrappingWidth="358.0000126361847">
                     <font>
                         <Font size="26.0" />
@@ -157,7 +161,7 @@
                         <Font size="15.0" />
                     </font>
                 </Text>
-                <CheckBox fx:id="ctrl" layoutX="305.0" layoutY="54.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="56.0" selected="true" text="Ctrl">
+                <CheckBox fx:id="ctrl" layoutX="305.0" layoutY="54.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="88.0" selected="true" text="Ctrl/Meta">
                     <font>
                         <Font name="Apple Braille" size="14.0" />
                     </font>
@@ -185,14 +189,17 @@
                 <CheckBox layoutX="120.0" layoutY="210.0" mnemonicParsing="false" text="CheckBox" visible="false" />
                 <CheckBox layoutX="120.0" layoutY="186.0" mnemonicParsing="false" text="CheckBox" visible="false" />
                 <CheckBox layoutX="42.0" layoutY="210.0" mnemonicParsing="false" text="CheckBox" visible="false" />
-                <TextField fx:id="tfTempoDeClicker" layoutX="292.0" layoutY="172.0" text="5" />
+                <TextField fx:id="tfTempoDeClicker" layoutX="292.0" layoutY="172.0" prefHeight="29.0" prefWidth="141.0" text="5" />
                 <Label fx:id="lbTempoDeClicker" layoutX="207.0" layoutY="177.0" text="%txtComecaEm">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <Button layoutX="14.0" layoutY="227.0" mnemonicParsing="false" onAction="#limparDados" text="%txtReseta" />
-                <Button layoutX="106.0" layoutY="226.0" mnemonicParsing="false" onAction="#informacaoReseta" prefHeight="27.0" prefWidth="28.0" text="?" />
-            </children></Pane>
+                <Button layoutX="14.0" layoutY="215.0" mnemonicParsing="false" onAction="#limparDados" text="%txtReseta" />
+                <Button layoutX="100.0" layoutY="214.0" mnemonicParsing="false" onAction="#informacaoReseta" prefHeight="27.0" prefWidth="28.0" text="?" />
+            </children>
+         <effect>
+            <DropShadow blurType="GAUSSIAN" color="#00b100" height="4.25" radius="1.8125" width="5.0" />
+         </effect></Pane>
     </children>
 </AnchorPane>
