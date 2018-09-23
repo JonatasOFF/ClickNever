@@ -3,22 +3,29 @@ package Logica;
 import Interfaces.CallBackInterface;
 import Models.Mouse;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.layout.Pane;
-import jdk.nashorn.internal.objects.Global;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
+import org.jnativehook.mouse.NativeMouseEvent;
+import org.jnativehook.mouse.NativeMouseInputListener;
+
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.io.*;
@@ -33,50 +40,66 @@ import java.util.logging.Logger;
 
 /**
  * @Author: Jonatas De Oliveira Ferreira
- * @Version: 0.5 - SNAPSHOT
+ * @Version: 0.5
  *
- * @CoisasParaFazer:
+ * @CoisasParaFazer: -MouseControler
  *
  *
- * Em Iniciar/Start colocar um CheckBox para conferir se quer executar com o clicker Infinite ou com Tempo
- *
- * -*Tentar dar introdução a <Clicker Never>Utilizando Vbox ou Hbox, para colocar uma lista ou tabela de posições do clicker que serão ociladas conforme
- * Fazer isso até a !versão 0.6 ou 0.7 ou nessa ou na 0.5!
- *
- * </Clicker Never> Isso Em teste claro -*
  * @ATALHOS:
  * @*LD* : Leitura de dados (gravar,ler,resetar)
+ * @*IR* : Mudanças de Janelas
+ * @*INFORMACOES* : Dar informações ao usuário
+ * @*CLICK* : Utilizações para os Clickers, Execução, Fazer.
+ * @*VERIFICACOES* : Verifica se tal coisa deve ser executada ou não, utilizada ou não (Geralmente usada no Inicializable)
+ * @*CONTROLER* : São relacionados ao Controler, porém sem nenhum Grupo em Conjunto (example ld tem leitura e gravação, portanto é um conjunto que um depende do outro)
  *
+ *@CLASS:
+ * @ControleMouse : Controla as partições do Mouse para modificações e pegar os inputs dele
+ *
+ * @ControleKeyboard : Controla o Keyboard, para Start,Pause ou Stop. Muito Util
+ *
+ * @Detecta : Ele serve para Detectar erros,letras,limite de numeros em lugares errados, Sempre utilizar pra quando quiser Limitar digitos do Usuario
+ *
+ * @CallBackEspera : Ele é o CallBackEspera, serve para dar um tempo entre a inicialização do Clicker, Por enqunato essa é sua unica utilização
  *
  */
 public class Controlador implements Initializable {
 
     @FXML
-    public TableView<Mouse> tvTabela;
-    @FXML
-    public TableColumn<Mouse, Integer> coluna1;
-    @FXML
-    public TableColumn<Mouse, Integer> coluna2;
-    @FXML
-    public TableColumn<Mouse, Integer> apenas;
-    @FXML
-    public CheckBox cbDesativarTeclado;
+    public TextField tfClickers;
 
-    private ObservableList<Mouse> observableList;
+    private int getTfTempoDeClicker() {
+        if (tfTempoDeClicker.getText().equals("")) {
+            return 0;
+        } else {
+            return Integer.parseInt(tfTempoDeClicker.getText());
+        }
+    }
 
-    private CallBackEspera cb = new CallBackEspera();
+    private RadioButton getGroupBotoesVelocidade() {
+        return (RadioButton) groupBotoes.getSelectedToggle();
+    }
 
-    private List<Mouse> mouses = new ArrayList<>();
+    void setPodeExecutarClicke(boolean podeExecutarClicke) {
+        this.podeExecutarClicke = podeExecutarClicke;
+    }
 
-    private int segundos = 0;
+    private boolean clickerSelect;
 
-    private int minutos = 0;
+    private boolean executouSet;
+
+
+    private int tfSegundos = 0;
+
+    private int tfMinutos = 0;
 
     private int horas = 0;
 
     private int vezes = 0;
 
-    private int tempoDeClicker;
+    private int xNew;
+
+    private int yNew;
 
     private boolean podeExecutarClicke = true;
 
@@ -92,32 +115,6 @@ public class Controlador implements Initializable {
 
     private boolean pauseExecuter = false;
 
-    private int getTfTempoDeClicker() {
-        if (tfTempoDeClicker.getText().equals("")) {
-            return 0;
-        } else {
-            return Integer.parseInt(tfTempoDeClicker.getText());
-        }
-    }
-
-    private int getVelocidade(String velocidade) {
-        switch (velocidade) {
-            case ("0.001/s"):
-                tempoDeClicker = 1;
-                break;
-            case ("0.01/s"):
-                tempoDeClicker = 10;
-                break;
-            case ("0.1/s"):
-                tempoDeClicker = 100;
-                break;
-            case ("1/s"):
-                tempoDeClicker = 1000;
-                break;
-        }
-        return tempoDeClicker;
-    }
-
     private String comecaEm;
 
     private String pausaEm;
@@ -126,44 +123,78 @@ public class Controlador implements Initializable {
 
     private String fimDaExecucao;
 
-    private String getListaSave() {
-        //hora,minuto,segundo,numeroClicker,tempoComeca,tfStop,pausa/continua,tfStart,one,dez,cem,mil,ctrl,isTempoDeClicker
-        return hours.getText() +
-                "," +
-                min.getText() +
-                "," +
-                seg.getText() +
-                "," +
-                tfTempoDeClicker.getText() +
-                "," +
-                tfStop.getText() +
-                "," +
-                tfWait.getText() +
-                "," +
-                tfStart.getText() +
-                "," +
-                oneMs.isSelected() +
-                "," +
-                dezms.isSelected() +
-                "," +
-                cemMs.isSelected() +
-                "," +
-                milMs.isSelected() +
-                "," +
-                ctrl.isSelected() +
-                "," +
-                cbTempoDeClicker.isSelected();
-    }
-
-    void setPodeExecutarClicke(boolean podeExecutarClicke) {
-        this.podeExecutarClicke = podeExecutarClicke;
-    }
-
-    private void setProgressbar(double value) {
-        progressbar.indeterminateProperty();
-        progressbar.setProgress(value);
-    }
-
+    @FXML
+    private Pane paneMouseControler;
+    @FXML
+    private Pane paneKeyboardMenu;
+    @FXML
+    private Pane paneClicker;
+    @FXML
+    public TableView<Mouse> tvTabela;
+    @FXML
+    public TableColumn<Mouse, Integer> x;
+    @FXML
+    public TableColumn<Mouse, Integer> y;
+    @FXML
+    public TableColumn<Mouse, Integer> clickers;
+    @FXML
+    public TableColumn<Mouse, Integer> ordem;
+    @FXML
+    public ComboBox<String> cboxOrdem;
+    @FXML
+    public CheckBox cbDesativarTeclado;
+    @FXML
+    public CheckBox cbCtrl;
+    @FXML
+    public CheckBox cbTempoDeClicker;
+    @FXML
+    public TextArea taClicker;
+    @FXML
+    public TextArea taTempo;
+    @FXML
+    public TextField tfStop;
+    @FXML
+    public TextField tfHours;
+    @FXML
+    public TextField tfMin;
+    @FXML
+    public TextField tfWait;
+    @FXML
+    public TextField tfTempoDeClicker;
+    @FXML
+    public TextField tfStart;
+    @FXML
+    public TextField tfSeg;
+    @FXML
+    private ProgressBar pbDuracao;
+    @FXML
+    private ToggleGroup groupBotoes;
+    @FXML
+    public ToggleGroup groupSelectionClick;
+    @FXML
+    public RadioButton rbClickerInfinite;
+    @FXML
+    public RadioButton rbClickTempo;
+    @FXML
+    private RadioButton rbOnems;
+    @FXML
+    private RadioButton rbDezms;
+    @FXML
+    private RadioButton rbCemms;
+    @FXML
+    private RadioButton rbMilms;
+    @FXML
+    public Label lbErrorComeca;
+    @FXML
+    public Label lbTempoDeClicker;
+    @FXML
+    public Label lbErrorPara;
+    @FXML
+    public Label lbErrorPausa;
+    @FXML
+    private Label lbIniciando;
+    @FXML
+    public Label lbTempo;
     @FXML
     public Label lbDuracao;
     @FXML
@@ -173,284 +204,43 @@ public class Controlador implements Initializable {
     @FXML
     public Label lbPause;
     @FXML
-    public TextField tfStart;
-    @FXML
-    public TextField tfWait;
-    @FXML
-    public CheckBox ctrl;
-    @FXML
-    public Label lbErrorComeca;
-    @FXML
-    public Label lbErrorPara;
-    @FXML
-    public Label lbErrorPausa;
-    @FXML
-    public CheckBox cbTempoDeClicker;
-    @FXML
-    public TextField tfTempoDeClicker;
-    @FXML
-    public Label lbTempoDeClicker;
-    @FXML
-    public TextField tfStop;
-    @FXML
-    public Button btAtivaMouseTempo;
-    @FXML
-    public TextArea textoTempo;
-    @FXML
-    public Label lbTempo;
-    @FXML
-    public TextField hours;
-    @FXML
-    public TextField min;
-    @FXML
-    public TextField seg;
-    @FXML
-    private Pane KeyboardMenu;
-    @FXML
-    private ToggleGroup groupBotoes;
-    @FXML
-    private RadioButton oneMs;
-    @FXML
-    private RadioButton dezms;
-    @FXML
-    private RadioButton cemMs;
-    @FXML
-    private RadioButton milMs;
-    @FXML
-    private ProgressBar progressbar;
-    @FXML
-    private Label iniciando;
-    @FXML
-    private Pane MouseControler;
-    @FXML
-    private Pane panelClicker;
-    @FXML
-    public TextArea textoClicker;
-    @FXML
     public Label lbClicke;
 
-    @FXML
-    private void avisoVelocidade() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.show();
-        switch (LANGUAGE) {
-            case ("pt"):
-                alert.setTitle("Aviso");
-                alert.setContentText("Esta opção pode levar a uma perda de Clicker");
-                alert.setHeaderText("Aviso");
-                break;
-            case ("fr"):
-                alert.setTitle("Avis");
-                alert.setContentText("Cette option peut entraîner une perte de clics");
-                alert.setHeaderText("Avis");
-                break;
-            default:
-                alert.setTitle("Notice");
-                alert.setContentText("This opção can lead to a clickthrough");
-                alert.setHeaderText("Notice");
-        }
-    }
+    private ObservableList<Mouse> mousesUsados;
+
+    private List<String> ordemM = new ArrayList<>();
+
+    private ObservableList<String> ordemMouses;
+
+    private List<Mouse> mouses = new ArrayList<>();
+
+    //<IR>------------------------------------------------------------------------------------------------------------------------------
 
     @FXML
     private void irApaginaInicial() {
-        MouseControler.setVisible(false);
-        KeyboardMenu.setVisible(false);
-        panelClicker.setVisible(true);
+        paneMouseControler.setVisible(false);
+        paneKeyboardMenu.setVisible(false);
+        paneClicker.setVisible(true);
     }
 
-    /**
-     * Projeto em Alpha
-     * Serve para automatizar qualquer Game Clicker
-     */
     @FXML
     void irMouseControler() {
-        panelClicker.setVisible(false);
-        MouseControler.setVisible(true);
-        KeyboardMenu.setVisible(false);
+        paneClicker.setVisible(false);
+        paneMouseControler.setVisible(true);
+        paneKeyboardMenu.setVisible(false);
     }
 
     @FXML
     private void irKeyboard() {
-        panelClicker.setVisible(false);
-        MouseControler.setVisible(false);
-        KeyboardMenu.setVisible(true);
+        paneClicker.setVisible(false);
+        paneMouseControler.setVisible(false);
+        paneKeyboardMenu.setVisible(true);
     }
 
-    @FXML
-    public void informacoesTempo() {
-        if (!abertoTempo) {
-            abertoTempo = true;
-            lbTempo.setVisible(true);
-            textoTempo.setVisible(true);
-        } else {
-            lbTempo.setVisible(false);
-            textoTempo.setVisible(false);
-            abertoTempo = false;
-        }
-    }
+    //<\IR>------------------------------------------------------------------------------------------------------------------------------
 
-    @FXML
-    public void InformacoesClicke() {
-        if (!abertoClicker) {
-            abertoClicker = true;
-            textoClicker.setVisible(true);
-            lbClicke.setVisible(true);
-        } else {
-            abertoClicker = false;
-            textoClicker.setVisible(false);
-            lbClicke.setVisible(false);
-        }
-    }
 
-    @FXML
-    public void informacaoReseta() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.show();
-        switch (LANGUAGE) {
-            case ("pt"):
-                alert.setTitle("Reset");
-                alert.setContentText("Lembre-se se. Todos os dados salvos serão redefinidos");
-                alert.setHeaderText("Aqui você reseta todas as suas informações");
-                break;
-            case ("fr"):
-                alert.setTitle("Reset");
-                alert.setContentText("Rappelez-vous Toutes les données enregistrées seront réinitialisées");
-                alert.setHeaderText("Ici vous redimensionnez toutes vos informations");
-                break;
-            default:
-                alert.setTitle("Reset");
-                alert.setContentText("Remember if. All saved data will be reset");
-                alert.setHeaderText("Here you resize all your information");
-                break;
-        }
-    }
-
-    private void atualizaTeclasMostradas() {
-        if (ctrl.isSelected()) {
-            if (!(tfWait.getText().equals(tfStop.getText()) || tfStop.getText().equals(tfStart.getText()) || tfStart.getText().equals(tfWait.getText()))) {
-                lbStart.setText("Ctrl + " + tfStart.getText());
-                lbStop.setText("Ctrl + " + tfStop.getText());
-                lbPause.setText("Ctrl + " + tfWait.getText());
-            }
-        } else {
-            if (!(tfWait.getText().equals(tfStop.getText()) || tfStop.getText().equals(tfStart.getText()) || tfStart.getText().equals(tfWait.getText()))) {
-                lbStart.setText(tfStart.getText());
-                lbStop.setText(tfStop.getText());
-                lbPause.setText(tfWait.getText());
-            }
-        }
-    }
-
-    //<LEITURA DE DADOS>*LD*
-
-    @FXML
-    void limparDados() {
-        hours.setText("");
-        min.setText("");
-        seg.setText("");
-        tfTempoDeClicker.setText("5");
-        tfStop.setText("Z");
-        tfWait.setText("X");
-        tfStart.setText("S");
-        oneMs.setSelected(false);
-        dezms.setSelected(false);
-        cemMs.setSelected(false);
-        milMs.setSelected(true);
-        ctrl.setSelected(true);
-        cbTempoDeClicker.setSelected(true);
-        atualizaTeclasMostradas();
-    }
-
-    private void lerDados() {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(System.getProperty("user.dir") + "\\" + "Saves" + "\\" + "save.ini")))) {
-            String linha;
-            while ((linha = reader.readLine()) != null) {
-                String[] dados = linha.split(",");
-                System.out.println(Arrays.toString(dados));
-                hours.setText(dados[0]);
-                min.setText(dados[1]);
-                seg.setText(dados[2]);
-                tfTempoDeClicker.setText(dados[3]);
-                tfStop.setText(dados[4]);
-                tfWait.setText(dados[5]);
-                tfStart.setText(dados[6]);
-                oneMs.setSelected(Boolean.parseBoolean(dados[7]));
-                dezms.setSelected(Boolean.parseBoolean(dados[8]));
-                cemMs.setSelected(Boolean.parseBoolean(dados[9]));
-                milMs.setSelected(Boolean.parseBoolean(dados[10]));
-                ctrl.setSelected(Boolean.parseBoolean(dados[11]));
-                cbTempoDeClicker.setSelected(Boolean.parseBoolean(dados[12]));
-            }
-        } catch (IOException ignored) {
-        }
-    }
-
-    private void armazenaDados() {
-
-        try {
-            File save = new File(String.valueOf(Files.createDirectories(Paths.get(System.getProperty("user.dir") + "\\" + "Saves"))));
-            FileWriter whiter = new FileWriter(save + "\\" + "save.ini");
-
-            whiter.append(getListaSave());
-
-            whiter.flush();
-            whiter.close();
-        } catch (IOException ignored) {
-        }
-    }
-
-    //<\LEITURA DE DADOS>*LD*
-
-    private int velocidadeTempo(String velocidade) {
-        switch (velocidade) {
-            case ("0.001/s"):
-                return 1000;
-            case ("0.01/s"):
-                return 100;
-            case ("0.1/s"):
-                return 10;
-            case ("1/s"):
-                return 1;
-            default:
-                return 1;
-        }
-    }
-
-    private void pegaValores() {
-
-        if (!(seg.getText().equals(""))) {
-            segundos = Integer.parseInt(seg.getText());
-        }
-        if (!(min.getText().equals(""))) {
-            minutos = Integer.parseInt(min.getText());
-        }
-        if (!(hours.getText().equals(""))) {
-            if (horas > 24) {
-                horas = 24;
-            } else {
-                horas = Integer.parseInt(hours.getText());
-            }
-        }
-    }
-
-    private void tempo(int tempo) {
-        int h = tempo / 3600;
-        int m = (tempo % 3600) / 60;
-        int s = (tempo % 3600) % 60;
-        Platform.runLater(() -> lbDuracao.setText(h + " : " + m + " : " + s));
-    }
-
-    private void pauseClicker() throws InterruptedException {
-        if (pausa) {
-            Thread.sleep(3000);
-            if (!podeExecutarClicke) {
-                pausa = false;
-                Platform.runLater(() -> iniciando.setText(andamentoEm));
-            } else {
-                pauseClicker();
-            }
-        }
-    }
+    //<INFORMACOES>------------------------------------------------------------------------------------------------------------------------------
 
     private void alertKeyboard() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -474,23 +264,230 @@ public class Controlador implements Initializable {
         }
         jaExecutou = false;
     }
-
-    private void manipulandoTabela() {
-
-        coluna1.setCellValueFactory(new PropertyValueFactory<>("x"));
-        coluna2.setCellValueFactory(new PropertyValueFactory<>("y"));
-        apenas.setCellValueFactory(new PropertyValueFactory<>("clickers"));
-
-        Mouse c1 = new Mouse(2, 3, 4, 5);
-        Mouse c2 = new Mouse(2, 2, 2, 2);
-        mouses.add(c1);
-        mouses.add(c2);
-        observableList = FXCollections.observableArrayList(mouses);
-        tvTabela.setItems(observableList);
-        System.out.println(tvTabela.getItems().toString());
-
+    @FXML
+    private void avisoVelocidade() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.show();
+        switch (LANGUAGE) {
+            case ("pt"):
+                alert.setTitle("Aviso");
+                alert.setContentText("Esta opção pode levar a uma perda de Clicker");
+                alert.setHeaderText("Aviso");
+                break;
+            case ("fr"):
+                alert.setTitle("Avis");
+                alert.setContentText("Cette option peut entraîner une perte de clics");
+                alert.setHeaderText("Avis");
+                break;
+            default:
+                alert.setTitle("Notice");
+                alert.setContentText("This opção can lead to a clickthrough");
+                alert.setHeaderText("Notice");
+        }
+    }
+    @FXML
+    public void informacoesTempo() {
+        if (!abertoTempo) {
+            abertoTempo = true;
+            lbTempo.setVisible(true);
+            taTempo.setVisible(true);
+        } else {
+            lbTempo.setVisible(false);
+            taTempo.setVisible(false);
+            abertoTempo = false;
+        }
+    }
+    @FXML
+    public void InformacoesClicke() {
+        if (!abertoClicker) {
+            abertoClicker = true;
+            taClicker.setVisible(true);
+            lbClicke.setVisible(true);
+        } else {
+            abertoClicker = false;
+            taClicker.setVisible(false);
+            lbClicke.setVisible(false);
+        }
+    }
+    @FXML
+    public void InformacoesDesativarTeclado() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.show();
+        switch (LANGUAGE) {
+            case ("pt"):
+                alert.setTitle("KeyBoard");
+                alert.setHeaderText("Aqui você desativa a resposta do teclado");
+                alert.setContentText("Comandos do teclado não respondem a essa opção desativada");
+                break;
+            case ("fr"):
+                alert.setTitle("KeyBoard");
+                alert.setContentText("Les commandes clavier ne répondent pas à cette option handicapé");
+                alert.setHeaderText("Ici, vous désactivez la réponse au clavier");
+                break;
+            default:
+                alert.setTitle("KeyBoard");
+                alert.setContentText("Keyboard commands do not respond to this option disable");
+                alert.setHeaderText("Here you deactivate the keyboard response");
+                break;
+        }
+    }
+    @FXML
+    public void informacaoReseta() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.show();
+        switch (LANGUAGE) {
+            case ("pt"):
+                alert.setTitle("Reset");
+                alert.setContentText("Lembre-se se. Todos os dados salvos serão redefinidos");
+                alert.setHeaderText("Aqui você reseta todas as suas informações");
+                break;
+            case ("fr"):
+                alert.setTitle("Reset");
+                alert.setContentText("Rappelez-vous Toutes les données enregistrées seront réinitialisées");
+                alert.setHeaderText("Ici vous redimensionnez toutes vos informations");
+                break;
+            default:
+                alert.setTitle("Reset");
+                alert.setContentText("Remember if. All saved data will be reset");
+                alert.setHeaderText("Here you resize all your information");
+                break;
+        }
     }
 
+    //<\INFORMACOES>------------------------------------------------------------------------------------------------------------------------------
+
+    //<LEITURA DE DADOS>*LD*
+    @FXML
+    void limparDados() {
+        tfHours.setText("");
+        tfMin.setText("");
+        tfSeg.setText("");
+        tfTempoDeClicker.setText("5");
+        tfStop.setText("Z");
+        tfWait.setText("X");
+        tfStart.setText("S");
+        rbOnems.setSelected(false);
+        rbDezms.setSelected(false);
+        rbCemms.setSelected(false);
+        rbMilms.setSelected(true);
+        cbCtrl.setSelected(true);
+        cbTempoDeClicker.setSelected(true);
+        rbClickTempo.setSelected(false);
+        rbClickerInfinite.setSelected(true);
+        atualizaTeclasMostradas();
+    }
+
+    private void lerDados() {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(System.getProperty("user.dir") + "\\" + "Saves" + "\\" + "save.ini")))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                String[] dados = linha.split(",");
+                System.out.println(Arrays.toString(dados));
+                tfHours.setText(dados[0]);
+                tfMin.setText(dados[1]);
+                tfSeg.setText(dados[2]);
+                tfTempoDeClicker.setText(dados[3]);
+                tfStop.setText(dados[4]);
+                tfWait.setText(dados[5]);
+                tfStart.setText(dados[6]);
+                rbOnems.setSelected(Boolean.parseBoolean(dados[7]));
+                rbDezms.setSelected(Boolean.parseBoolean(dados[8]));
+                rbCemms.setSelected(Boolean.parseBoolean(dados[9]));
+                rbMilms.setSelected(Boolean.parseBoolean(dados[10]));
+                cbCtrl.setSelected(Boolean.parseBoolean(dados[11]));
+                cbTempoDeClicker.setSelected(Boolean.parseBoolean(dados[12]));
+                rbClickerInfinite.setSelected(Boolean.parseBoolean(dados[13]));
+                rbClickTempo.setSelected(Boolean.parseBoolean(dados[14]));
+                }
+            } catch (IOException ignored) {
+            ignored.printStackTrace();
+        }
+    }
+
+    private String getListaSave() {
+        //hora,tfMinuto,tfSegundo,tempoComeca,tfStop,pausa/continua,tfStart,one,dez,cem,mil,cbCtrl,isTempoDeClicker,isClickerInfinite,isClickerTempo
+        return tfHours.getText() +
+                "," +
+                tfMin.getText() +
+                "," +
+                tfSeg.getText() +
+                "," +
+                tfTempoDeClicker.getText() +
+                "," +
+                tfStop.getText() +
+                "," +
+                tfWait.getText() +
+                "," +
+                tfStart.getText() +
+                "," +
+                rbOnems.isSelected() +
+                "," +
+                rbDezms.isSelected() +
+                "," +
+                rbCemms.isSelected() +
+                "," +
+                rbMilms.isSelected() +
+                "," +
+                cbCtrl.isSelected() +
+                "," +
+                cbTempoDeClicker.isSelected() +
+                "," +
+                rbClickerInfinite.isSelected() +
+                "," +
+                rbClickTempo.isSelected();
+    }
+
+    private void armazenaDados() {
+
+        try {
+            File save = new File(String.valueOf(Files.createDirectories(Paths.get(System.getProperty("user.dir") + "\\" + "Saves"))));
+            FileWriter whiter = new FileWriter(save + "\\" + "save.ini");
+
+            whiter.append(getListaSave());
+
+            whiter.flush();
+            whiter.close();
+        } catch (IOException ignored) {
+        }
+    }
+
+    //<\LEITURA DE DADOS>*LD*
+
+
+    //<CLICK>------------------------------------------------------------------------------------------------------------------------------------
+
+    @FXML
+    public void stopClickerInfinite() {
+        setPodeExecutarClicke(false);
+    }
+    @FXML
+    public void clickerInfinite() {
+        if (!jaExecutou) {
+            if (!(tfWait.getText().equals(tfStop.getText()) || tfStop.getText().equals(tfStart.getText()) || tfStart.getText().equals(tfWait.getText()))) {
+                jaExecutou = true;
+                cb.espera(() -> {
+                    Platform.runLater(() -> lbIniciando.setText("Em andamento..."));
+                    do {
+                        Robot robotl = new Robot();
+                        robotl.mousePress(InputEvent.BUTTON1_MASK);
+                        robotl.mouseRelease(InputEvent.BUTTON1_MASK);
+                        robotl.delay(getVelocidade(getGroupBotoesVelocidade().getText(),true));
+                    } while (podeExecutarClicke);
+                    jaExecutou = false;
+                    setPodeExecutarClicke(true);
+                    Platform.runLater(() -> lbIniciando.setText(fimDaExecucao));
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Platform.runLater(() -> lbIniciando.setVisible(false));
+                });
+            } else {
+                alertKeyboard();
+            }
+        }
+    }
     @FXML
     private void executaMouseTempo() {
         try {
@@ -499,13 +496,13 @@ public class Controlador implements Initializable {
                 if (!(tfWait.getText().equals(tfStop.getText()) || tfStop.getText().equals(tfStart.getText()) || tfStart.getText().equals(tfWait.getText()))) {
                     pegaValores();
                     vezes = 0;
-                    int minTrue = minutos * 60;
-                    int hours = horas * 3600;
-                    vezes = (segundos + minTrue + hours);
+                    int tfMinTrue = tfMinutos * 60;
+                    int tfHours = horas * 3600;
+                    vezes = (tfSegundos + tfMinTrue + tfHours);
                     cb.espera(() -> {
                         try {
-                            Platform.runLater(() -> iniciando.setText(andamentoEm));
-                            executaclicker(vezes);
+                            Platform.runLater(() -> lbIniciando.setText(andamentoEm));
+                            executaClicker(vezes);
                             jaExecutou = false;
                         } catch (AWTException | InterruptedException e) {
                             e.printStackTrace();
@@ -521,27 +518,89 @@ public class Controlador implements Initializable {
         }
     }
 
+    private void pegaValores() {
+        if (!(tfSeg.getText().equals(""))) {
+            tfSegundos = Integer.parseInt(tfSeg.getText());
+        }
+        if (!(tfMin.getText().equals(""))) {
+            tfMinutos = Integer.parseInt(tfMin.getText());
+        }
+        if (!(tfHours.getText().equals(""))) {
+            if (horas > 24) {
+                horas = 24;
+            } else {
+                horas = Integer.parseInt(tfHours.getText());
+            }
+        }
+    }
+
+    private void tempo(int tfSegundos) {
+        int h = tfSegundos / 3600;
+        int m = (tfSegundos % 3600) / 60;
+        int s = (tfSegundos % 3600) % 60;
+        Platform.runLater(() -> lbDuracao.setText(h + " : " + m + " : " + s));
+    }
+
+    private void pauseClicker() throws InterruptedException {
+        if (pausa) {
+            Thread.sleep(3000);
+            if (!podeExecutarClicke) {
+                pausa = false;
+                Platform.runLater(() -> lbIniciando.setText(andamentoEm));
+            } else {
+                pauseClicker();
+            }
+        }
+    }
+
+    private int getVelocidade(String velocidade,boolean isVelocidade) {
+        //isVelocidade true = Velocidade de Clicker(ser executada em Clicker), false = Pegar valor da velocidade(Ser executada em Calculo de Tempo ou Quantidade de Clicker)
+        if (isVelocidade) {
+            switch (velocidade) {
+                case ("0.001/s"):
+                    return 1;
+                case ("0.01/s"):
+                    return 10;
+                case ("0.1/s"):
+                    return 100;
+                case ("1/s"):
+                    return 1000;
+                default:
+                return 1000;
+            }
+        } else {
+            switch (velocidade) {
+                case ("0.001/s"):
+                    return 1000;
+                case ("0.01/s"):
+                    return 100;
+                case ("0.1/s"):
+                    return 10;
+                case ("1/s"):
+                    return 1;
+                default:
+                    return 1;
+            }
+        }
+    }
+
     /**
      * @param quantas Pega valor de Quantos Clicker a serem executados
      * @throws AWTException         null
      * @throws InterruptedException null
      */
-    private void executaclicker(double quantas) throws AWTException, InterruptedException {
+    private void executaClicker(double quantas) throws AWTException, InterruptedException {
         if (quantas != 0) {
             pauseExecuter = true;
             setPodeExecutarClicke(true);
             Robot robot = new Robot();
-            RadioButton radio = (RadioButton) groupBotoes.getSelectedToggle();
-            quantas *= velocidadeTempo(radio.getText());
+            quantas *= getVelocidade(getGroupBotoesVelocidade().getText(),false);
             for (double i = 0; i <= quantas && podeExecutarClicke; i++) {
-                radio = (RadioButton) groupBotoes.getSelectedToggle();
-                tempo((int) (quantas - i) / velocidadeTempo(radio.getText()));
-                double result = i / quantas;
+                tempo((int) (quantas - i) / getVelocidade(getGroupBotoesVelocidade().getText(),false));
 
-                //interface que faz aparecer
-                setProgressbar(result);
+                pbDuracao.setProgress(i / quantas);
 
-                robot.delay(getVelocidade(radio.getText()));
+                robot.delay(getVelocidade(getGroupBotoesVelocidade().getText(),true));
                 robot.mousePress(InputEvent.BUTTON1_MASK);
                 robot.mouseRelease(InputEvent.BUTTON1_MASK);
 
@@ -568,54 +627,21 @@ public class Controlador implements Initializable {
             });
         }
         Platform.runLater(() -> {
-            iniciando.setText(fimDaExecucao);
+            lbIniciando.setText(fimDaExecucao);
             lbDuracao.setText("0 : 0 : 0");
-            progressbar.setProgress(0);
-            progressbar.indeterminateProperty();
+            pbDuracao.setProgress(0);
+            pbDuracao.indeterminateProperty();
         });
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         Platform.runLater(() -> {
-            iniciando.setVisible(false);
+            lbIniciando.setVisible(false);
             pauseExecuter = false;
         });
     }
 
-    @FXML
-    public void clickerInfinite() {
-        if (!jaExecutou) {
-            if (!(tfWait.getText().equals(tfStop.getText()) || tfStop.getText().equals(tfStart.getText()) || tfStart.getText().equals(tfWait.getText()))) {
-                jaExecutou = true;
-                cb.espera(() -> {
-                    Platform.runLater(() -> iniciando.setText("Em andamento..."));
-                    do {
-                        Robot robotl = new Robot();
-                        RadioButton radio = (RadioButton) groupBotoes.getSelectedToggle();
-                        robotl.mousePress(InputEvent.BUTTON1_MASK);
-                        robotl.mouseRelease(InputEvent.BUTTON1_MASK);
-                        robotl.delay(getVelocidade(radio.getText()));
-                        //robotl.waitForIdle();
-                    } while (podeExecutarClicke);
-                    jaExecutou = false;
-                    setPodeExecutarClicke(true);
-                    Platform.runLater(() -> iniciando.setText(fimDaExecucao));
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    Platform.runLater(() -> iniciando.setVisible(false));
-                });
-            } else {
-                alertKeyboard();
-            }
-        }
-    }
+    //<\CLICK>-------------------------------------------------------------------------------------------------------------------------------------
 
-    @FXML
-    public void stopClickerInfinite() {
-        setPodeExecutarClicke(false);
-    }
-
+    //<VERIFICACOES>-------------------------------------------------------------------------------------------------------------------------------
     private void verificaTempoDeClicker() {
         if (cbTempoDeClicker.isSelected()) {
             tfTempoDeClicker.setOpacity(1);
@@ -628,62 +654,156 @@ public class Controlador implements Initializable {
         }
     }
 
-    @FXML
-    public void InformacoesDesativarTeclado() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.show();
-        switch (LANGUAGE) {
-            case ("pt"):
-                alert.setTitle("KeyBoard");
-                alert.setHeaderText("Aqui você desativa a resposta do teclado");
-                alert.setContentText("Comandos do teclado não respondem a essa opção desativada");
-                break;
-            case ("fr"):
-                alert.setTitle("KeyBoard");
-                alert.setContentText("Les commandes clavier ne répondent pas à cette option handicapé");
-                alert.setHeaderText("Ici, vous désactivez la réponse au clavier");
-                break;
-            default:
-                alert.setTitle("KeyBoard");
-                alert.setContentText("Keyboard commands do not respond to this option disable");
-                alert.setHeaderText("Here you deactivate the keyboard response");
-                break;
+    private void ativarTeclado(boolean isTrue) throws NativeHookException {
+        if (!isTrue) {
+            GlobalScreen.registerNativeHook();
+        } else {
+            GlobalScreen.unregisterNativeHook();
         }
     }
 
-    /**
-     * Detectar/Funcionar/Programa Aberto
-     * A classe Detecta serve para ver se existe algum valor errado
-     * Também funciona como a classe que lança coisas a se fazer enquanto
-     * o programa está aberto
-     */
-    public class detecta {
+    private void atualizaTeclasMostradas() {
+        if (cbCtrl.isSelected()) {
+            if (!(tfWait.getText().equals(tfStop.getText()) || tfStop.getText().equals(tfStart.getText()) || tfStart.getText().equals(tfWait.getText()))) {
+                lbStart.setText("Ctrl + " + tfStart.getText());
+                lbStop.setText("Ctrl + " + tfStop.getText());
+                lbPause.setText("Ctrl + " + tfWait.getText());
+            }
+        } else {
+            if (!(tfWait.getText().equals(tfStop.getText()) || tfStop.getText().equals(tfStart.getText()) || tfStart.getText().equals(tfWait.getText()))) {
+                lbStart.setText(tfStart.getText());
+                lbStop.setText(tfStop.getText());
+                lbPause.setText(tfWait.getText());
+            }
+        }
+    }
 
-        /**
-         * Pedir ajuda por irmão pra ver se tem uma maneira melhor de fazer isso
-         */
+    private void manipulandoTabela() {
+
+        tvTabela.getItems().clear();
+
+        System.out.println(mouses.toString());
+        mousesUsados = FXCollections.observableArrayList(mouses);
+        tvTabela.setItems(mousesUsados);
+    }
+
+    private void manipulaCboxText() {
+        if (!mouses.isEmpty()) {
+            ordemM.clear();
+            mouses.forEach(k -> ordemM.add(String.valueOf(k.getOrdem())));
+            ordemMouses = FXCollections.observableArrayList(ordemM);
+            cboxOrdem.setItems(ordemMouses);
+        }
+    }
+
+    //<\VERIFICACOES>------------------------------------------------------------------------------------------------------------------------------
+
+    //<CONTROLER>------------------------------------------------------------------------------------------------------------------------------
+
+    @FXML
+    public void setClickers() {
+        if(!executouSet) {
+            executouSet = true;
+        }
+    }
+
+    //<\CONTROLER>------------------------------------------------------------------------------------------------------------------------------
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        new Detecta().retiraNumerosClicker();
+        lerDados();
+        atualizaTeclasMostradas();
+        verificaTempoDeClicker();
+        manipulandoTabela();
+        try {
+            GlobalScreen.addNativeKeyListener(new ControleKeyBoard());
+            GlobalScreen.addNativeMouseListener(new ControleMouse());
+            Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+            logger.setLevel(Level.WARNING);
+            logger.setUseParentHandlers(false);
+            ativarTeclado(cbDesativarTeclado.isSelected());
+            x.setCellValueFactory(new PropertyValueFactory<>("x"));
+            y.setCellValueFactory(new PropertyValueFactory<>("y"));
+            clickers.setCellValueFactory(new PropertyValueFactory<>("clickers"));
+            ordem.setCellValueFactory(new PropertyValueFactory<>("ordem"));
+        } catch (NativeHookException e) {
+            e.printStackTrace();
+        }
+
+        String tutorialClickerInfinite;
+        String tutorialClickerTempo;
+        switch (LANGUAGE) {
+            case("pt") :
+                comecaEm = "Começa em ";
+                pausaEm = "Pausar";
+                fimDaExecucao = "Fim da Execução";
+                andamentoEm = "Em andamento...";
+                tutorialClickerInfinite = "ClickerInfinite: serve para um clicker em\n" +
+                        "velocidade já feita pelo usuário e um tempo \n" +
+                        "infinito de clicker. Lembre-se, ele só Start e Stop.\n" +
+                        "Sem Pause.";
+                tutorialClickerTempo = "Você terá 3 espaçamentos h,m,s. dependendo do que colocar,\n" +
+                        "ele dira o tempo de clicker que vai durar.\n" +
+                        "Exemplo: Se você colocar pra 10s o seu clicker vai ficar clickando 10s\n" +
+                        "com base na velocidade. Seu clicker vai durar 10s\n";
+                break;
+            case("fr") :
+                comecaEm = "Commence à ";
+                pausaEm = "Pause";
+                fimDaExecucao = "Fin de l'exécution";
+                andamentoEm ="En cours...";
+                tutorialClickerInfinite = "ClickerInfinite: est pour un clicker dans\n" +
+                        "la vitesse déjà faite par l'utilisateur et une\n" +
+                        "clicker infini. Rappelez-vous que ce n'est que Start and Stop.\n" +
+                        "Sans pause";
+                tutorialClickerTempo = "Vous avez 3 espacements h, m, s. en fonction de ce qu'il faut faire,\n" +
+                        "le temps de clic qui durera.\n" +
+                        "Exemple: Si vous utilisez 10s, votre clic cliquera sur 10s\n" +
+                        "basé sur la vitesse. Votre clicker durera 10s";
+                break;
+            default:
+                comecaEm = "Starts at ";
+                pausaEm = "Pause";
+                fimDaExecucao = "End of Execution";
+                andamentoEm = "In progress...";
+                tutorialClickerInfinite = "ClickerInfinite: is for a clicker in\n" +
+                        "speed already made by the user and a\n" +
+                        "infinite clicker. Remember, it only Start and Stop.\n" +
+                        "Without Pause.";
+                tutorialClickerTempo = "You have 3 spacings h, m, s. depending on what to do,\n" +
+                        "the clicker time that will last.\n" +
+                        "Example: If you use 10s your click will be clicking on 10s\n" +
+                        "based on speed. Your clicker will last 10s";
+        }
+        taClicker.setText(tutorialClickerInfinite);
+        taTempo.setText(tutorialClickerTempo);
+    }
+
+    public class Detecta {
+
         void retiraNumerosClicker() {
-            hours.textProperty().addListener((observable, oldValue, newValue) -> {
+            tfHours.textProperty().addListener((observable, oldValue, newValue) -> {
                 if (!newValue.matches("\\d*")) {
-                    hours.setText(newValue.replaceAll("[^\\d]", ""));
+                    tfHours.setText(newValue.replaceAll("[^\\d]", ""));
                 } else if (newValue.matches("\\d\\d\\d")) {
-                    hours.setText(hours.getText(0, 2) + "");
+                    tfHours.setText(tfHours.getText(0, 2) + "");
                 }
                 armazenaDados();
             });
-            min.textProperty().addListener((observable, oldValue, newValue) -> {
+            tfMin.textProperty().addListener((observable, oldValue, newValue) -> {
                 if (!newValue.matches("\\d*")) {
-                    min.setText(newValue.replaceAll("[^\\d]", ""));
+                    tfMin.setText(newValue.replaceAll("[^\\d]", ""));
                 } else if (newValue.matches("\\d\\d\\d")) {
-                    min.setText(min.getText(0, 2) + "");
+                    tfMin.setText(tfMin.getText(0, 2) + "");
                 }
                 armazenaDados();
             });
-            seg.textProperty().addListener((observable, oldValue, newValue) -> {
+            tfSeg.textProperty().addListener((observable, oldValue, newValue) -> {
                 if (!newValue.matches("\\d*")) {
-                    seg.setText(newValue.replaceAll("[^\\d]", ""));
+                    tfSeg.setText(newValue.replaceAll("[^\\d]", ""));
                 } else if (newValue.matches("\\d\\d\\d")) {
-                    seg.setText(seg.getText(0, 2) + "");
+                    tfSeg.setText(tfSeg.getText(0, 2) + "");
                 }
                 armazenaDados();
             });
@@ -798,37 +918,94 @@ public class Controlador implements Initializable {
                     e.printStackTrace();
                 }
             });
-            ctrl.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            cbCtrl.selectedProperty().addListener((observable, oldValue, newValue) -> {
                 atualizaTeclasMostradas();
                 armazenaDados();
             });
-            oneMs.selectedProperty().addListener((observable, oldValue, newValue) -> armazenaDados());
-            dezms.selectedProperty().addListener((observable, oldValue, newValue) -> armazenaDados());
-            cemMs.selectedProperty().addListener((observable, oldValue, newValue) -> armazenaDados());
-            milMs.selectedProperty().addListener((observable, oldValue, newValue) -> armazenaDados());
+            rbOnems.selectedProperty().addListener((observable, oldValue, newValue) -> armazenaDados());
+            rbDezms.selectedProperty().addListener((observable, oldValue, newValue) -> armazenaDados());
+            rbCemms.selectedProperty().addListener((observable, oldValue, newValue) -> armazenaDados());
+            rbMilms.selectedProperty().addListener((observable, oldValue, newValue) -> armazenaDados());
             tfTempoDeClicker.textProperty().addListener((observable, oldValue, newValue) -> {
                 if (!newValue.matches("\\d*")) {
-                    min.setText(newValue.replaceAll("[^\\d]", ""));
+                    tfMin.setText(newValue.replaceAll("[^\\d]", ""));
                 }
                 armazenaDados();
+            });
+            rbClickTempo.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                clickerSelect = true;
+                armazenaDados();
+            });
+            rbClickerInfinite.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                clickerSelect = false;
+                armazenaDados();
+            });
+            cboxOrdem.valueProperty().addListener((observable, oldValue, newValue) -> {
+                if(newValue != null) {
+                    Platform.runLater(() -> {
+                        System.out.println(newValue);
+                        if(mousesUsados.get(Integer.parseInt(newValue) - 1).getClickers() != 0) {
+                            tfClickers.setText(String.valueOf(mousesUsados.get(Integer.parseInt(newValue) - 1).getClickers()));
+                        } else {
+                            tfClickers.setText("");
+                        }
+                    });
+                }
+            });
+            tfClickers.textProperty().addListener((observable, oldValue, newValue) -> {
+                try {
+                    mouses.get(Integer.parseInt(cboxOrdem.getEditor().getText()) - 1).setClickers(Integer.parseInt(newValue));
+                    manipulandoTabela();
+                }catch (Exception ignore) {}
             });
         }
     }
 
-    /**
-     * class para Parar/Pausar/Startar
-     * Para o clicker de executar
-     */
-    public class ControleClicker implements NativeKeyListener {
-        boolean ctrlOn = false;
+    public class ControleMouse implements NativeMouseInputListener {
 
-        private boolean ctrlConfirma(boolean letra, boolean ctrlAtivo) {
-            if (ctrl.isSelected()) {
-                return letra && ctrlAtivo;
+        @Override
+        public void nativeMouseClicked(NativeMouseEvent nativeMouseEvent) {
+        }
+
+        @Override
+        public void nativeMousePressed(NativeMouseEvent nativeMouseEvent) {
+        }
+
+        @Override
+        public void nativeMouseReleased(NativeMouseEvent nativeMouseEvent) {
+                if (executouSet) {
+                    mouses.add(new Mouse(nativeMouseEvent.getX(), nativeMouseEvent.getY(), 0, mouses.size() + 1));
+                    manipulandoTabela();
+                    manipulaCboxText();
+                    executouSet = false;
+                }
+
+                System.out.printf("X : %d Y : %d \n", nativeMouseEvent.getX(), nativeMouseEvent.getY());
+        }
+
+        @Override
+        public void nativeMouseMoved(NativeMouseEvent nativeMouseEvent) {
+
+        }
+
+        @Override
+        public void nativeMouseDragged(NativeMouseEvent nativeMouseEvent) {
+
+        }
+    }
+
+    public class ControleKeyBoard implements NativeKeyListener {
+
+        boolean cbCtrlOn = false;
+
+        private boolean cbCtrlConfirma(boolean letra, boolean cbCtrlAtivo) {
+            if (cbCtrl.isSelected()) {
+                return letra && cbCtrlAtivo;
             } else {
                 return letra;
             }
         }
+
 
 
         @Override
@@ -837,45 +1014,45 @@ public class Controlador implements Initializable {
 
         @Override
         public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-            //(NativeInputEvent.CTRL_L_MASK & nativeKeyEvent.getKeyCode()) != 0
-            String letra = (NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode()));
+            String letra = (NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode())).toUpperCase();
             System.out.println(letra);
 
-            if (letra.equals("Ctrl") || letra.equals("Meta")) {
-                ctrlOn = true;
+            if (letra.equals("CTRL") || letra.equals("META") || letra.equals("COMMAND") || letra.equals("CMD")) {
+                cbCtrlOn = true;
             }
 
-            if (ctrlConfirma(letra.equals(tfWait.getText()), ctrlOn) && !cbDesativarTeclado.isSelected()) {
+            if (cbCtrlConfirma(letra.equals(tfWait.getText()), cbCtrlOn) && !cbDesativarTeclado.isSelected()) {
                 if (!pausa && pauseExecuter) {
                     pausa = true;
-                    Platform.runLater(() -> iniciando.setText(pausaEm));
+                    Platform.runLater(() -> lbIniciando.setText(pausaEm));
                 } else if (pauseExecuter) {
                     pausa = false;
-                    Platform.runLater(() -> iniciando.setText(andamentoEm));
+                    Platform.runLater(() -> lbIniciando.setText(andamentoEm));
                 }
             }
-            if (ctrlConfirma(letra.equals(tfStop.getText()), ctrlOn) && !cbDesativarTeclado.isSelected()) {
+            if (cbCtrlConfirma(letra.equals(tfStop.getText()), cbCtrlOn) && !cbDesativarTeclado.isSelected()) {
                 setPodeExecutarClicke(false);
                 pausa = false;
             }
-            if (ctrlConfirma(letra.equals(tfStart.getText()), ctrlOn) && !cbDesativarTeclado.isSelected()) {
+            if (cbCtrlConfirma(letra.equals(tfStart.getText()), cbCtrlOn) && !cbDesativarTeclado.isSelected()) {
                 setPodeExecutarClicke(true);
-                clickerInfinite();
+                if(clickerSelect) {
+                    executaMouseTempo();
+                } else {
+                    clickerInfinite();
+                }
             }
         }
 
         @Override
         public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
-            if (NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode()).equals("Ctrl") || NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode()).equals("Meta")) {
-                ctrlOn = false;
+            String letra = NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode()).toUpperCase();
+            if (letra.equals("CTRL") || letra.equals("META") || letra.equals("COMMAND") || letra.equals("CMD")) {
+                cbCtrlOn = false;
             }
         }
-
     }
 
-    /**
-     * class para executar CallBack
-     */
     public class CallBackEspera {
 
         /**
@@ -887,8 +1064,8 @@ public class Controlador implements Initializable {
         void espera(CallBackInterface listener) {
 
             new Thread(() -> {
-                iniciando.setVisible(true);
-                progressbar.setVisible(true);
+                lbIniciando.setVisible(true);
+                pbDuracao.setVisible(true);
                 if (cbTempoDeClicker.isSelected()) {
                     setPodeExecutarClicke(true);
                     for (int i = getTfTempoDeClicker(); 0 <= i; i--) {
@@ -896,7 +1073,7 @@ public class Controlador implements Initializable {
                             String tfStart = comecaEm +
                                     String.valueOf((double) i) +
                                     "s";
-                            Platform.runLater(() -> iniciando.setText(tfStart));
+                            Platform.runLater(() -> lbIniciando.setText(tfStart));
                             if (!podeExecutarClicke) {
                                 i -= getTfTempoDeClicker();
                                 setPodeExecutarClicke(true);
@@ -916,77 +1093,5 @@ public class Controlador implements Initializable {
         }
     }
 
-    private void ativarTeclado(boolean isTrue) throws NativeHookException {
-        if (!isTrue) {
-            GlobalScreen.registerNativeHook();
-        } else {
-            GlobalScreen.unregisterNativeHook();
-        }
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        new detecta().retiraNumerosClicker();
-        lerDados();
-        atualizaTeclasMostradas();
-        verificaTempoDeClicker();
-        manipulandoTabela();
-        try {
-            GlobalScreen.addNativeKeyListener(new ControleClicker());
-            Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
-            logger.setLevel(Level.WARNING);
-            logger.setUseParentHandlers(false);
-            ativarTeclado(cbDesativarTeclado.isSelected());
-        } catch (NativeHookException e) {
-            e.printStackTrace();
-        }
-
-        String tutorialClickerInfinite;
-        String tutorialClickerTempo;
-        switch (LANGUAGE) {
-            case("pt") :
-                comecaEm = "Começa em ";
-                pausaEm = "Pausar";
-                fimDaExecucao = "Fim da Execução";
-                andamentoEm = "Em andamento...";
-                tutorialClickerInfinite = "ClickerInfinite: serve para um clicker em\n" +
-                        "velocidade já feita pelo usuário e um tempo \n" +
-                        "infinito de clicker. Lembre-se, ele só Start e Stop.\n" +
-                        "Sem Pause.";
-                tutorialClickerTempo = "Você terá 3 espaçamentos h,m,s. dependendo do que colocar,\n" +
-                        "ele dira o tempo de clicker que vai durar.\n" +
-                        "Exemplo: Se você colocar pra 10s o seu clicker vai ficar clickando 10s\n" +
-                        "com base na velocidade. Seu clicker vai durar 10s\n";
-                break;
-            case("fr") :
-                comecaEm = "Commence à ";
-                pausaEm = "Pause";
-                fimDaExecucao = "Fin de l'exécution";
-                andamentoEm ="En cours...";
-                tutorialClickerInfinite = "ClickerInfinite: est pour un clicker dans\n" +
-                        "la vitesse déjà faite par l'utilisateur et une\n" +
-                        "clicker infini. Rappelez-vous que ce n'est que Start and Stop.\n" +
-                        "Sans pause";
-                tutorialClickerTempo = "Vous avez 3 espacements h, m, s. en fonction de ce qu'il faut faire,\n" +
-                        "le temps de clic qui durera.\n" +
-                        "Exemple: Si vous utilisez 10s, votre clic cliquera sur 10s\n" +
-                        "basé sur la vitesse. Votre clicker durera 10s";
-                break;
-            default:
-                comecaEm = "Starts at ";
-                pausaEm = "Pause";
-                fimDaExecucao = "End of Execution";
-                andamentoEm = "In progress...";
-                tutorialClickerInfinite = "ClickerInfinite: is for a clicker in\n" +
-                        "speed already made by the user and a\n" +
-                        "infinite clicker. Remember, it only Start and Stop.\n" +
-                        "Without Pause.";
-                tutorialClickerTempo = "You have 3 spacings h, m, s. depending on what to do,\n" +
-                        "the clicker time that will last.\n" +
-                        "Example: If you use 10s your click will be clicking on 10s\n" +
-                        "based on speed. Your clicker will last 10s";
-        }
-        textoClicker.setText(tutorialClickerInfinite);
-        textoTempo.setText(tutorialClickerTempo);
-    }
+    private CallBackEspera cb = new CallBackEspera();
 }

@@ -1,14 +1,2 @@
-Version 0.5 -Soon-
+Version 0.6;
 
-Adicionado:
-
--Aviso sobre qual tecla está sendo usado para determinada ação;
-
--Devido a um bug em que o teclado não responde certos comandos enquanto
- Click Never estiver escutando, agora você pode desativar isso;
-
--Possivel Introdução a MouseControler;
-
-Mudanças:
-
--Nada por enquanto...
