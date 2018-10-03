@@ -1,2 +1,13 @@
-Version 0.6;
+Version 0.6 -New-
 
+Adicionado:
+
+MouseControler:
+
+MouseControler é um sistema de Clicker que clicka numa certa posição colocada e se ouver outra ele irá mudar para aquela posição
+clickando no valor que o usuario colocar. Para Setar é muito simples, basta Clickar em "Set" depois selecionar qual Index ou Ordem você quer
+Colocar um valor Clicker, após colocar um Index, você deve colocar os números de Clicker.
+
+Futuramente Será feito novas alterações como setar Tempo, mudar Coordenadas, mudar Ordem, e etc...
+
+Por favor, deixe seu FeedBack

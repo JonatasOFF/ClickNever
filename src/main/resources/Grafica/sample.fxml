@@ -25,26 +25,21 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="painelPrincipal" accessibleText="Click Never" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Logica.Controlador">
+<AnchorPane fx:id="painelPrincipal" accessibleText="Click Never" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Logica.Controlador">
     <children>
-        <Pane fx:id="paneClicker" cache="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="900.0" visible="false">
+        <Pane fx:id="paneClicker" cache="true" prefHeight="300.0" prefWidth="600.0" visible="false">
             <opaqueInsets>
                 <Insets />
             </opaqueInsets>
             <effect>
                 <DropShadow blurType="GAUSSIAN" color="#00b100" height="4.25" radius="1.8125" width="5.0" />
             </effect>
-            <Label fx:id="lbIniciando" ellipsisString="" focusTraversable="false" layoutX="718.0" layoutY="81.0" prefHeight="27.0" prefWidth="182.0" snapToPixel="false" textAlignment="CENTER" wrapText="true">
-                <font>
-                    <Font size="18.0" />
-                </font>
-            </Label>
-            <Label alignment="CENTER" layoutX="718.0" layoutY="26.0" prefHeight="54.0" prefWidth="182.0" text="%status" underline="true">
+            <Label alignment="CENTER" layoutX="450.0" layoutY="23.0" prefHeight="54.0" prefWidth="150.0" text="%status" underline="true">
                 <font>
                     <Font name="Microsoft YaHei UI Light" size="36.0" />
                 </font>
             </Label>
-            <VBox layoutX="719.0" layoutY="108.0" prefHeight="122.0" prefWidth="71.0">
+            <VBox layoutX="528.0" layoutY="176.0" prefHeight="122.0" prefWidth="71.0">
                 <children>
                     <RadioButton fx:id="rbOnems" mnemonicParsing="false" onAction="#avisoVelocidade" prefHeight="30.0" prefWidth="71.0" text="0.001/s">
                         <toggleGroup>
@@ -58,8 +53,8 @@
             </VBox>
             <TextField fx:id="tfHours" layoutX="10.0" layoutY="95.0" prefHeight="29.0" prefWidth="28.0" promptText="h" />
             <Label layoutX="16.0" layoutY="128.0" text="%txtHours" />
-            <TextField fx:id="tfMin" layoutX="55.0" layoutY="94.0" prefHeight="29.0" prefWidth="28.0" promptText="m" />
-            <Rectangle fx:id="retangulo11" arcHeight="5.0" arcWidth="5.0" height="750.0" layoutX="338.0" layoutY="-224.0" rotate="90.0" stroke="BLACK" strokeType="INSIDE" width="12.0">
+            <TextField fx:id="tfMin" layoutX="43.0" layoutY="95.0" prefHeight="25.0" prefWidth="28.0" promptText="m" />
+            <Rectangle fx:id="retangulo11" arcHeight="5.0" arcWidth="5.0" height="450.0" layoutX="219.0" layoutY="-76.0" rotate="90.0" stroke="BLACK" strokeType="INSIDE" width="10.0">
                 <fill>
                     <RadialGradient centerY="0.5" cycleMethod="REFLECT" radius="0.5">
                         <stops>
@@ -71,20 +66,9 @@
                 </fill>
             </Rectangle>
             <Label layoutX="59.0" layoutY="128.0" text="%txtMin" />
-            <TextField fx:id="tfSeg" layoutX="93.0" layoutY="95.0" prefHeight="29.0" prefWidth="28.0" promptText="s" text="10" />
+            <TextField fx:id="tfSeg" layoutX="78.0" layoutY="95.0" prefHeight="25.0" prefWidth="28.0" promptText="s" text="10" />
             <Label layoutX="99.0" layoutY="128.0" text="%txtSeg" />
-            <Button layoutX="131.0" layoutY="96.0" mnemonicParsing="false" onAction="#executaMouseTempo" text="%ativar" />
-            <Rectangle fx:id="retangulo111" arcHeight="5.0" arcWidth="5.0" height="496.0" layoutX="707.0" stroke="BLACK" strokeType="INSIDE" width="12.0">
-            <fill>
-               <RadialGradient centerY="0.5" cycleMethod="REFLECT" radius="0.5">
-                  <stops>
-                     <Stop color="#000000be" />
-                     <Stop color="#000000be" offset="0.21072796934865878" />
-                     <Stop color="#00b100" offset="1.0" />
-                  </stops>
-               </RadialGradient>
-            </fill>
-            </Rectangle>
+            <Button layoutX="114.0" layoutY="95.0" mnemonicParsing="false" onAction="#executaMouseTempo" text="%ativar" />
             <Label layoutX="7.0" layoutY="28.0" prefHeight="38.0" prefWidth="217.0" text="%MouseTempo" textFill="#0000007e">
                 <font>
                     <Font size="26.0" />
@@ -95,145 +79,166 @@
                     <Font size="26.0" />
                 </font>
             </Label>
-            <Button layoutX="193.0" layoutY="96.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#informacoesTempo" prefHeight="25.0" prefWidth="28.0" text="?" />
-            <Label fx:id="lbClicke" layoutX="327.0" layoutY="157.0" prefHeight="25.0" prefWidth="172.0" text="Tutorial Click Infinite" visible="false">
-                <font>
-                    <Font name="Bell MT" size="19.0" />
-                </font>
-            </Label>
-            <TextArea fx:id="taTempo" cache="true" editable="false" layoutX="327.0" layoutY="63.0" prefHeight="82.0" prefWidth="380.0" promptText="TextoExplicando" text="Você terá 3 espaçamentos h,m,s. dependendo do que colocar,&#10;ele dira o tempo de clicker que vai durar.&#10;Exemplo: Se você colocar pra 10s o seu clicker vai ficar clickando 10s&#10;com base na velocidade. Seu clicker vai durar 10s&#10;" visible="false" wrapText="true">
+            <Button layoutX="179.0" layoutY="95.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#informacoesTempo" prefHeight="25.0" prefWidth="28.0" text="?" />
+            <TextArea fx:id="taTempo" cache="true" editable="false" layoutX="223.0" layoutY="25.0" prefHeight="115.0" prefWidth="227.0" promptText="TextoExplicando" text="Você terá 3 espaçamentos h,m,s. dependendo do que colocar,&#10;ele dira o tempo de clicker que vai durar.&#10;Exemplo: Se você colocar pra 10s o seu clicker vai ficar clickando 10s&#10;com base na velocidade. Seu clicker vai durar 10s&#10;" visible="false" wrapText="true">
                 <font>
                     <Font name="System Bold Italic" size="13.0" />
                 </font>
             </TextArea>
-            <Label fx:id="lbTempo" layoutX="327.0" layoutY="35.0" prefHeight="30.0" prefWidth="217.0" text="Tutorial Clicker Tempo" visible="false">
-                <font>
-                    <Font name="Bell MT" size="19.0" />
-                </font>
-            </Label>
-            <Button layoutX="115.0" layoutY="197.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#InformacoesClicke" prefHeight="25.0" prefWidth="28.0" text="?" />
-            <TextArea fx:id="taClicker" cache="true" editable="false" layoutX="327.0" layoutY="180.0" prefHeight="60.0" prefWidth="380.0" promptText="TextoExplicando" visible="false" wrapText="true">
+            <Button layoutX="107.0" layoutY="197.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#InformacoesClicke" prefHeight="25.0" prefWidth="28.0" text="?" />
+            <TextArea fx:id="taClicker" cache="true" editable="false" layoutX="207.0" layoutY="154.0" prefHeight="77.0" prefWidth="238.0" promptText="TextoExplicando" visible="false" wrapText="true">
                 <font>
                     <Font name="System Bold Italic" size="13.0" />
                 </font>
             </TextArea>
-            <Label fx:id="lbDuracao" layoutX="16.0" layoutY="72.0" prefHeight="17.0" prefWidth="109.0" text="h : m : s" textAlignment="JUSTIFY" />
-            <ProgressBar fx:id="pbDuracao" focusTraversable="false" layoutX="719.0" layoutY="263.0" prefHeight="18.0" prefWidth="189.0" progress="0.0" />
+            <Label fx:id="lbDuracao" layoutX="16.0" layoutY="72.0" prefHeight="17.0" prefWidth="96.0" text="h : m : s" textAlignment="JUSTIFY" />
+            <ProgressBar fx:id="pbDuracao" focusTraversable="false" layoutX="459.0" layoutY="128.0" prefHeight="18.0" prefWidth="150.0" progress="0.0" />
          <Button layoutX="16.0" layoutY="197.0" mnemonicParsing="false" onAction="#clickerInfinite" text="Start" />
          <Button layoutX="61.0" layoutY="197.0" mnemonicParsing="false" onAction="#stopClickerInfinite" text="Stop" />
-         <Label fx:id="lbStart" layoutX="26.0" layoutY="240.0" prefHeight="25.0" prefWidth="41.0" text="TEXTOTEXOTEXTO" textFill="#0099ff" />
-         <Label fx:id="lbStop" layoutX="71.0" layoutY="240.0" prefHeight="25.0" prefWidth="41.0" text="TEXTOTEXOTEXTO" textFill="#0099ff" />
-         <Label fx:id="lbPause" layoutX="121.0" layoutY="240.0" prefHeight="25.0" prefWidth="41.0" text="Ctrl+U" textFill="#0099ff" />
-         <Label layoutX="24.0" layoutY="228.0" text="Start" />
-         <Label layoutX="118.0" layoutY="228.0" text="Pause" />
-         <Label layoutX="67.0" layoutY="228.0" text="Stop" />
-         <CheckBox fx:id="cbDesativarTeclado" layoutX="551.0" layoutY="250.0" mnemonicParsing="false" text="Desativar Teclado" />
-         <Button layoutX="672.0" layoutY="246.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#InformacoesDesativarTeclado" prefHeight="25.0" prefWidth="28.0" text="?" />
+         <Label fx:id="lbStart" layoutX="26.0" layoutY="240.0" prefHeight="25.0" prefWidth="41.0" text="TEXTOTEXOTEXTO" textFill="#145cff" />
+         <Label fx:id="lbStop" layoutX="71.0" layoutY="240.0" prefHeight="25.0" prefWidth="41.0" text="TEXTOTEXOTEXTO" textFill="#145cff" />
+         <Label fx:id="lbPause" layoutX="121.0" layoutY="240.0" prefHeight="25.0" prefWidth="41.0" text="Ctrl+U" textFill="#145cff" />
+         <Label layoutX="24.0" layoutY="228.0" text="Start" underline="true" />
+         <Label layoutX="118.0" layoutY="228.0" text="Pause" underline="true" />
+         <Label layoutX="67.0" layoutY="228.0" text="Stop" underline="true" />
+         <CheckBox fx:id="cbDesativarTeclado" layoutX="35.0" layoutY="278.0" mnemonicParsing="false" text="Desativar Teclado" />
+         <Button layoutX="2.0" layoutY="274.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#InformacoesDesativarTeclado" prefHeight="25.0" prefWidth="28.0" text="?" />
+            <Label fx:id="lbIniciando" ellipsisString="" focusTraversable="false" layoutX="459.0" layoutY="76.0" prefHeight="27.0" prefWidth="139.0" snapToPixel="false" textAlignment="CENTER" wrapText="true">
+                <font>
+                    <Font size="18.0" />
+                </font>
+            </Label>
+         <Rectangle fx:id="retangulo111" arcHeight="5.0" arcWidth="5.0" height="450.0" layoutX="448.0" layoutY="-3.0" stroke="BLACK" strokeType="INSIDE" width="10.0">
+            <fill>
+               <RadialGradient centerY="0.5" cycleMethod="REFLECT" radius="0.5">
+                  <stops>
+                     <Stop color="#000000b2" />
+                     <Stop color="#000000b2" offset="0.6819923371647508" />
+                     <Stop color="#00b100" offset="1.0" />
+                  </stops>
+               </RadialGradient>
+            </fill>
+         </Rectangle>
         </Pane>
-        <Pane fx:id="paneMouseControler" prefHeight="272.0" prefWidth="900.0">
-         <children>
-            <TableView fx:id="tvTabela" layoutX="601.0" layoutY="23.0" prefHeight="249.0" prefWidth="299.0">
-              <columns>
-                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="X" fx:id="x" />
-                <TableColumn fx:id="y" editable="false" prefWidth="75.0" sortable="false" text="Y" />
-                  <TableColumn fx:id="clickers" editable="false" prefWidth="75.0" sortable="false" text="Clickers" />
-                  <TableColumn fx:id="ordem" editable="false" prefWidth="75.0" sortable="false" text="Ordem" />
-              </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
+        <Pane fx:id="paneMouseControler" prefHeight="300.0" prefWidth="600.0">
+            <Button layoutX="158.0" layoutY="161.0" mnemonicParsing="false" onAction="#limparTabela" prefHeight="25.0" prefWidth="50.0" text="Clear" />
+            <Button layoutX="65.0" layoutY="272.0" mnemonicParsing="false" onAction="#executaMouseControler" text="Execute" />
+            <Button layoutX="14.0" layoutY="272.0" mnemonicParsing="false" onAction="#setClickers" text="Setar" />
+            <ComboBox fx:id="cboxOrdem" editable="true" layoutX="123.0" layoutY="47.0" prefHeight="25.0" prefWidth="82.0" promptText="Index" />
+            <TextField fx:id="tfClickers" layoutX="16.0" layoutY="44.0" prefHeight="29.0" prefWidth="96.0" />
+            <Label layoutX="16.0" layoutY="27.0" text="Clickers">
+            <font>
+               <Font size="14.0" />
+            </font></Label>
+            <VBox layoutX="277.0" layoutY="222.0" prefHeight="77.0" prefWidth="71.0">
+                <RadioButton fx:id="rbOnems1" mnemonicParsing="false" onAction="#avisoVelocidade" prefHeight="30.0" prefWidth="71.0" text="0.001/s">
+                    <toggleGroup>
+                        <ToggleGroup fx:id="groupBotoes1" />
+                    </toggleGroup>
+                </RadioButton>
+                <RadioButton fx:id="rbDezms1" mnemonicParsing="false" prefHeight="30.0" text="0.01/s" toggleGroup="$groupBotoes1" />
+                <RadioButton fx:id="rbCemms1" mnemonicParsing="false" prefHeight="30.0" prefWidth="87.0" text="0.1/s" toggleGroup="$groupBotoes1" />
+                <RadioButton fx:id="rbMilms1" mnemonicParsing="false" prefHeight="30.0" prefWidth="87.0" selected="true" text="1/s" toggleGroup="$groupBotoes1" />
+            </VBox>
+            <Label fx:id="lbIndexPara" layoutX="14.0" layoutY="87.0" prefHeight="17.0" prefWidth="132.0" />
+            <ComboBox fx:id="cboxMudançaIndex" layoutX="156.0" layoutY="83.0" prefHeight="25.0" prefWidth="44.0" />
+            <TableView fx:id="tvTabela" layoutX="359.0" layoutY="23.0" prefHeight="289.0" prefWidth="253.0">
+                <columns>
+                    <TableColumn editable="false" prefWidth="75.0" sortable="false" text="X" fx:id="x" />
+                    <TableColumn fx:id="y" editable="false" prefWidth="75.0" sortable="false" text="Y" />
+                    <TableColumn fx:id="clickers" editable="false" prefWidth="75.0" sortable="false" text="Clickers" />
+                    <TableColumn fx:id="ordem" editable="false" prefWidth="75.0" sortable="false" text="Index" />
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                </columnResizePolicy>
             </TableView>
-            <Button layoutX="293.0" layoutY="124.0" mnemonicParsing="false" text="Button" />
-            <Button layoutX="356.0" layoutY="124.0" mnemonicParsing="false" text="Executar" />
-            <Button layoutX="209.0" layoutY="124.0" mnemonicParsing="false" onAction="#setClickers" text="Setar" />
-            <ComboBox fx:id="cboxOrdem" editable="true" layoutX="168.0" layoutY="208.0" prefHeight="25.0" prefWidth="82.0" promptText="Ordem" />
-            <TextField fx:id="tfClickers" layoutX="14.0" layoutY="208.0" prefHeight="29.0" prefWidth="96.0" />
-            <Label layoutX="14.0" layoutY="191.0" text="Clickers" />
-         </children></Pane>
-        <Pane fx:id="paneKeyboardMenu" prefHeight="272.0" prefWidth="900.0" visible="false">
-            <children>
-                <TextField fx:id="tfStop" layoutX="12.0" layoutY="79.0" prefHeight="29.0" prefWidth="28.0" text="Z" />
-                <Text layoutX="58.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%txtParar" wrappingWidth="158.13671875" />
-                <TextField fx:id="tfWait" layoutX="12.0" layoutY="119.0" prefHeight="29.0" prefWidth="28.0" text="X" />
-                <TextField fx:id="tfStart" layoutX="12.0" layoutY="159.0" prefHeight="29.0" prefWidth="28.0" text="S" />
-                <Text layoutX="58.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%txtComeca" wrappingWidth="158.13671875" />
-                <Text layoutX="58.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%txtPausa/Continue" wrappingWidth="158.13671875" />
-                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9cb5ff" height="287.0" layoutX="455.0" stroke="BLACK" strokeType="INSIDE" width="12.0" />
-                <Text layoutX="70.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MouseClicker" textAlignment="CENTER" wrappingWidth="317.0000126361847">
-                    <font>
-                        <Font size="26.0" />
-                    </font>
-                </Text>
-                <Text layoutX="493.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MouseClickerAutomatic" textAlignment="CENTER" wrappingWidth="358.0000126361847">
-                    <font>
-                        <Font size="22.0" />
-                    </font>
-                </Text>
-                <Text layoutX="634.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Soon..." textAlignment="CENTER" wrappingWidth="77.00001263618469">
-                    <font>
-                        <Font size="15.0" />
-                    </font>
-                </Text>
-                <CheckBox fx:id="cbCtrl" layoutX="286.0" layoutY="84.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="88.0" selected="true" text="Ctrl/Meta">
-                    <font>
-                        <Font name="Apple Braille" size="14.0" />
-                    </font>
-                </CheckBox>
-                <Label fx:id="lbErrorPausa" layoutX="173.0" layoutY="93.0" prefHeight="21.0" prefWidth="56.0" text="%txtError" textFill="RED" visible="false">
-                    <font>
-                        <Font size="15.0" />
-                    </font>
-                </Label>
-                <Label fx:id="lbErrorComeca" layoutX="113.0" layoutY="133.0" text="%txtError" textFill="RED" visible="false">
-                    <font>
-                        <Font size="15.0" />
-                    </font>
-                </Label>
-                <Label fx:id="lbErrorPara" layoutX="113.0" layoutY="54.0" text="%txtError" textFill="RED" visible="false">
-                    <font>
-                        <Font size="15.0" />
-                    </font>
-                </Label>
-                <CheckBox fx:id="cbTempoDeClicker" layoutX="286.0" layoutY="115.0" mnemonicParsing="false" selected="true" text="%txtTempodeclicker">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </CheckBox>
-                <CheckBox layoutX="120.0" layoutY="210.0" mnemonicParsing="false" text="CheckBox" visible="false" />
-                <CheckBox layoutX="120.0" layoutY="186.0" mnemonicParsing="false" text="CheckBox" visible="false" />
-                <CheckBox layoutX="42.0" layoutY="210.0" mnemonicParsing="false" text="CheckBox" visible="false" />
-                <TextField fx:id="tfTempoDeClicker" layoutX="386.0" layoutY="174.0" prefHeight="29.0" prefWidth="61.0" text="5" />
-                <Label fx:id="lbTempoDeClicker" layoutX="312.0" layoutY="178.0" text="%txtComecaEm">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </Label>
-                <Button layoutX="323.0" layoutY="232.0" mnemonicParsing="false" onAction="#limparDados" text="%txtReseta" />
-                <Button layoutX="413.0" layoutY="231.0" mnemonicParsing="false" onAction="#informacaoReseta" prefHeight="27.0" prefWidth="28.0" text="?" />
-            <RadioButton fx:id="rbClickerInfinite" layoutX="9.0" layoutY="194.0" mnemonicParsing="false" selected="true" text="ClickInfinite">
-               <toggleGroup>
-                  <ToggleGroup fx:id="groupSelectionClick" />
-               </toggleGroup>
-            </RadioButton>
-            <RadioButton fx:id="rbClickTempo" layoutX="101.0" layoutY="194.0" mnemonicParsing="false" text="ClickTempo" toggleGroup="$groupSelectionClick" />
-            </children>
+            <Label layoutX="277.0" layoutY="207.0" prefHeight="17.0" prefWidth="71.0" text="Speed" />
+         <Label fx:id="lbIniciadoControler" layoutX="214.0" layoutY="44.0" prefHeight="29.0" prefWidth="124.0">
+            <font>
+               <Font size="14.0" />
+            </font>
+         </Label>
+         <Label fx:id="lbMostraTeclaClicker" layoutX="19.0" layoutY="242.0" prefHeight="17.0" prefWidth="74.0" />
+         <Label layoutX="19.0" layoutY="224.0" text="SetClicker" />
+         <Button layoutX="158.0" layoutY="125.0" mnemonicParsing="false" onAction="#deleteIndex" text="Delete" />
+         <Label fx:id="lbDeleteIndex" layoutX="66.0" layoutY="129.0" prefHeight="17.0" prefWidth="82.0" />
+         <Label layoutX="124.0" layoutY="27.0" prefHeight="17.0" prefWidth="40.0" text="Select">
+            <font>
+               <Font size="14.0" />
+            </font>
+         </Label>
          <effect>
-            <DropShadow blurType="GAUSSIAN" color="#00b100" height="4.25" radius="1.8125" width="5.0" />
-         </effect></Pane>
-      <MenuBar prefHeight="12.0" prefWidth="929.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="%itemPrograma">
-            <items>
-              <MenuItem mnemonicParsing="false" onAction="#irApaginaInicial" text="Home Page" />
-                  <MenuItem mnemonicParsing="false" onAction="#irMouseControler" text="MouseControlerAplha" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="%ops">
-            <items>
-              <MenuItem mnemonicParsing="false" onAction="#irKeyboard" text="Keyboard " />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
+            <DropShadow blurType="GAUSSIAN" color="#00b100" height="15.33" radius="4.5825" width="5.0" />
+         </effect>
+        </Pane>
+        <Pane fx:id="paneKeyboardMenu" prefHeight="300.0" prefWidth="600.0" visible="false">
+            <effect>
+                <DropShadow blurType="GAUSSIAN" color="#00b100" height="4.25" radius="1.8125" width="5.0" />
+            </effect>
+            <TextField fx:id="tfStop" layoutX="3.0" layoutY="80.0" prefHeight="29.0" prefWidth="28.0" text="Z" />
+            <Text layoutX="49.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%txtParar" wrappingWidth="158.13671875" />
+            <TextField fx:id="tfWait" layoutX="3.0" layoutY="120.0" prefHeight="29.0" prefWidth="28.0" text="X" />
+            <TextField fx:id="tfStart" layoutX="3.0" layoutY="154.0" prefHeight="29.0" prefWidth="28.0" text="S" />
+            <Text layoutX="49.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%txtComeca" wrappingWidth="158.13671875" />
+            <Text layoutX="49.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%txtPausa/Continue" wrappingWidth="158.13671875" />
+            <Text layoutX="186.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MouseClicker" textAlignment="CENTER" wrappingWidth="227.00000694394112">
+                <font>
+                    <Font size="26.0" />
+                </font>
+            </Text>
+            <CheckBox fx:id="cbCtrl" layoutX="382.0" layoutY="113.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="96.0" selected="true" text="Ctrl/Meta">
+                <font>
+                    <Font name="Apple Braille" size="14.0" />
+                </font>
+            </CheckBox>
+            <Label fx:id="lbErrorPausa" layoutX="173.0" layoutY="93.0" prefHeight="21.0" prefWidth="56.0" text="%txtError" textFill="RED" visible="false">
+                <font>
+                    <Font size="15.0" />
+                </font>
+            </Label>
+            <Label fx:id="lbErrorComeca" layoutX="113.0" layoutY="133.0" text="%txtError" textFill="RED" visible="false">
+                <font>
+                    <Font size="15.0" />
+                </font>
+            </Label>
+            <Label fx:id="lbErrorPara" layoutX="113.0" layoutY="54.0" text="%txtError" textFill="RED" visible="false">
+                <font>
+                    <Font size="15.0" />
+                </font>
+            </Label>
+            <CheckBox fx:id="cbTempoDeClicker" layoutX="382.0" layoutY="141.0" mnemonicParsing="false" selected="true" text="%txtTempodeclicker">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </CheckBox>
+            <CheckBox layoutX="120.0" layoutY="210.0" mnemonicParsing="false" text="CheckBox" visible="false" />
+            <CheckBox layoutX="120.0" layoutY="186.0" mnemonicParsing="false" text="CheckBox" visible="false" />
+            <CheckBox layoutX="42.0" layoutY="210.0" mnemonicParsing="false" text="CheckBox" visible="false" />
+            <TextField fx:id="tfTempoDeClicker" layoutX="484.0" layoutY="166.0" prefHeight="29.0" prefWidth="61.0" text="5" />
+            <Label fx:id="lbTempoDeClicker" layoutX="382.0" layoutY="171.0" text="%txtComecaEm">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Label>
+            <Button layoutX="6.0" layoutY="226.0" mnemonicParsing="false" onAction="#limparDados" text="%txtReseta" />
+            <Button layoutX="91.0" layoutY="225.0" mnemonicParsing="false" onAction="#informacaoReseta" prefHeight="27.0" prefWidth="28.0" text="?" />
+         <RadioButton fx:id="rbClickerInfinite" layoutX="17.0" layoutY="191.0" mnemonicParsing="false" text="ClickerInfinite" toggleGroup="$groupSelectionClick">
+            <toggleGroup>
+               <ToggleGroup fx:id="groupSelectionClick" />
+            </toggleGroup>
+         </RadioButton>
+         <RadioButton fx:id="rbClickTempo" layoutX="113.0" layoutY="191.0" mnemonicParsing="false" text="ClickTempo" toggleGroup="$groupSelectionClick" />
+         <RadioButton fx:id="rbMouseControler" layoutX="207.0" layoutY="191.0" mnemonicParsing="false" selected="true" text="MouseControler" toggleGroup="$groupSelectionClick" />
+        </Pane>
+        <MenuBar prefHeight="25.0" prefWidth="608.0">
+            <Menu mnemonicParsing="false" text="%itemPrograma">
+                <MenuItem mnemonicParsing="false" onAction="#irApaginaInicial" text="Home Page" />
+                <MenuItem mnemonicParsing="false" onAction="#irMouseControler" text="MouseControlerAlpha" />
+            </Menu>
+            <Menu mnemonicParsing="false" text="%ops">
+                <MenuItem mnemonicParsing="false" onAction="#irKeyboard" text="Keyboard " />
+            </Menu>
+        </MenuBar>
     </children>
 </AnchorPane>

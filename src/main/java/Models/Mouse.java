@@ -1,34 +1,17 @@
 package Models;
 
+import javafx.application.Platform;
+import javafx.scene.control.Label;
+
 import java.awt.*;
 import java.awt.event.InputEvent;
 
 public class Mouse {
 
-    private Robot r;
-
-    {
-        try {
-            r = new Robot();
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
-    }
-
     private int x;
     private int y;
     private int clickers;
     private int ordem;
-
-
-    public void executarClickerMouse(int Velocidade) {
-        r.mouseMove(getX(),getY());
-        for(int i = 0; i < clickers; i++) {
-            r.delay(Velocidade);
-            r.mousePress(InputEvent.BUTTON1_MASK);
-            r.mouseRelease(InputEvent.BUTTON1_MASK);
-        }
-    }
 
     @Override
     public String toString() {

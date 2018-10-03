@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 
 /**
  * @Author: Jonatas De Oliveira Ferreira
- * @@Versio: 0.5
+ * @Version: : 0.7
  */
 public class Main extends Application {
 
@@ -22,7 +22,7 @@ public class Main extends Application {
             Parent root = FXMLLoader.load(getClass().getResource("/Grafica/sample.fxml"), ResourceBundle.getBundle("limguages"));
             Scene scene = new Scene(root);
             stage.getIcons().add(new Image("/Image/ClickerImage.png"));
-            stage.setTitle("Click Never 0.5");
+            stage.setTitle("Click Never 0.6 - SNAPSHOT");
 
             stage.setResizable(false);
             stage.setFullScreen(false);
@@ -45,7 +45,7 @@ public class Main extends Application {
     @Override
     public void stop() {
         Controlador c = new Controlador();
-        c.setPodeExecutarClicke(false);
+        c.setExecutableClicker(false);
         System.exit(0);
     }
 }

@@ -3,5 +3,5 @@ package Interfaces;
 import java.awt.*;
 
 public interface CallBackInterface {
-    void onFinish() throws AWTException;
+    void onFinish() throws InterruptedException;
 }
