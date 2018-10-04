@@ -27,7 +27,7 @@
 
 <AnchorPane fx:id="painelPrincipal" accessibleText="Click Never" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Logica.Controlador">
     <children>
-        <Pane fx:id="paneClicker" cache="true" prefHeight="300.0" prefWidth="600.0" visible="false">
+        <Pane fx:id="paneClicker" cache="true" prefHeight="300.0" prefWidth="600.0">
             <opaqueInsets>
                 <Insets />
             </opaqueInsets>
@@ -120,7 +120,7 @@
             </fill>
          </Rectangle>
         </Pane>
-        <Pane fx:id="paneMouseControler" prefHeight="300.0" prefWidth="600.0">
+        <Pane fx:id="paneMouseControler" prefHeight="300.0" prefWidth="600.0" visible="false">
             <Button layoutX="158.0" layoutY="161.0" mnemonicParsing="false" onAction="#limparTabela" prefHeight="25.0" prefWidth="50.0" text="Clear" />
             <Button layoutX="65.0" layoutY="272.0" mnemonicParsing="false" onAction="#executaMouseControler" text="Execute" />
             <Button layoutX="14.0" layoutY="272.0" mnemonicParsing="false" onAction="#setClickers" text="Setar" />
@@ -234,7 +234,7 @@
         <MenuBar prefHeight="25.0" prefWidth="608.0">
             <Menu mnemonicParsing="false" text="%itemPrograma">
                 <MenuItem mnemonicParsing="false" onAction="#irApaginaInicial" text="Home Page" />
-                <MenuItem mnemonicParsing="false" onAction="#irMouseControler" text="MouseControlerAlpha" />
+                <MenuItem mnemonicParsing="false" onAction="#irMouseControler" text="MouseControler" />
             </Menu>
             <Menu mnemonicParsing="false" text="%ops">
                 <MenuItem mnemonicParsing="false" onAction="#irKeyboard" text="Keyboard " />
