@@ -3,34 +3,31 @@ package Logica;
 import Interfaces.CallBackInterface;
 import Models.Mouse;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-import jdk.nashorn.internal.objects.Global;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 import org.jnativehook.mouse.NativeMouseEvent;
 import org.jnativehook.mouse.NativeMouseInputListener;
+
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,13 +37,16 @@ import java.util.logging.Logger;
  * @Version: 0.7
  *
  *
+ * @Mudancas : Resolver bug de tempo, colocar lopp em MouseControler, por enquanto isso -> 0.8
+ *
+ *
  * @ATALHOS:
  * @*LD* : Leitura de dados (gravar,ler,resetar)
  * @*IR* : Mudanças de Janelas
  * @*INFORMACOES* : Dar informações ao usuário
  * @*CLICK* : Utilizações para os Clickers, Execução, Fazer.
  * @*VERIFICACOES* : Verifica se tal coisa deve ser executada ou não, utilizada ou não (Geralmente usada no Inicializable)
- * @*CONTROLER* : São relaciondos ao Controler, porém sem nenhum Grupo em Conjunto (example ld tem leitura e gravação, portanto é um conjunto que um depende do outro)
+ * @*CONTROLER* : São relaciondos ao Controler, porém sem nenhum Grupo em Conjunto (example *LD* tem leitura e gravação, portanto é um conjunto que um depende do outro)
  *
  * Se estiver utilizando a Intellj para mudanças no codigo, por favor, use CTRL + SHIFT + -
  * Para minimizar os metodos ou class

@@ -7,12 +7,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
 import java.util.ResourceBundle;
 
 
 /**
  * @Author: Jonatas De Oliveira Ferreira
- * @Version: : 0.7
+ * @Version: : 0.7 -> 0.8
+ *
  */
 public class Main extends Application {
 
@@ -22,7 +24,7 @@ public class Main extends Application {
             Parent root = FXMLLoader.load(getClass().getResource("/Grafica/sample.fxml"), ResourceBundle.getBundle("limguages"));
             Scene scene = new Scene(root);
             stage.getIcons().add(new Image("/Image/ClickerImage.png"));
-            stage.setTitle("Click Never 0.6 - SNAPSHOT");
+            stage.setTitle("Click Never 0.8");
 
             stage.setResizable(false);
             stage.setFullScreen(false);
