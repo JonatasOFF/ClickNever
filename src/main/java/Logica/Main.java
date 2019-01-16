@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.util.ResourceBundle;
 
@@ -15,6 +16,8 @@ import java.util.ResourceBundle;
  * @Author: Jonatas De Oliveira Ferreira
  * @Version: : 0.7 -> 0.8
  *
+ *
+ * Color Sky : #87cefa;
  */
 public class Main extends Application {
 
@@ -23,10 +26,12 @@ public class Main extends Application {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/Grafica/sample.fxml"), ResourceBundle.getBundle("limguages"));
             Scene scene = new Scene(root);
-            stage.getIcons().add(new Image("/Image/ClickerImage.png"));
+            stage.getIcons().add(new Image("/Image/image_background.png"));
             stage.setTitle("Click Never 0.8");
+            stage.initStyle(StageStyle.DECORATED);
 
             stage.setResizable(false);
+
             stage.setFullScreen(false);
             stage.setScene(scene);
             stage.show();

@@ -12,6 +12,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
@@ -38,28 +39,28 @@ import java.util.logging.Logger;
  *
  *
  * @Mudancas : Resolver bug de tempo, colocar lopp em MouseControler, por enquanto isso -> 0.8
- * git push origin master
+ * git push origin master or git push
  *
  *
  * @ATALHOS:
  * @*LD* : Leitura de dados (gravar,ler,resetar)
- * @*IR* : Mudanças de Janelas
- * @*INFORMACOES* : Dar informações ao usuário
- * @*CLICK* : Utilizações para os Clickers, Execução, Fazer.
+ * @*IR* : Mudancas de Janelas
+ * @*INFORMACOES* : Dar informacões ao usuário
+ * @*CLICK* : Utilizacões para os Clickers, Execucão, Fazer.
  * @*VERIFICACOES* : Verifica se tal coisa deve ser executada ou não, utilizada ou não (Geralmente usada no Inicializable)
- * @*CONTROLER* : São relaciondos ao Controler, porém sem nenhum Grupo em Conjunto (example *LD* tem leitura e gravação, portanto é um conjunto que um depende do outro)
+ * @*CONTROLER* : São relaciondos ao Controler, porém sem nenhum Grupo em Conjunto (example *LD* tem leitura e gravacão, portanto é um conjunto que um depende do outro)
  *
- * Se estiver utilizando a Intellj para mudanças no codigo, por favor, use CTRL + SHIFT + -
+ * Se estiver utilizando a Intellj para mudancas no codigo, por favor, use CTRL + SHIFT + -
  * Para minimizar os metodos ou class
  *
  *@CLASS:
- * @ControleMouse : Controla as partições do Mouse para modificações e pegar os inputs dele
+ * @ControleMouse : Controla as particões do Mouse para modificacões e pegar os inputs dele
  *
  * @ControleKeyboard : Controla o Keyboard, para Start,Pause ou Stop. Muito Util
  *
  * @Detecta : Ele serve para Detectar erros,letras,limite de numeros em lugares errados, Sempre utilizar pra quando quiser Limitar digitos do Usuario
  *
- * @CallBackEspera : Ele é o CallBackEspera, serve para dar um tempo entre a inicialização do Clicker, Por enqunato essa é sua unica utilização
+ * @CallBackEspera : Ele é o CallBackEspera, serve para dar um tempo entre a inicializacão do Clicker, Por enqunato essa é sua unica utilizacão
  *
  *
  */
@@ -70,7 +71,7 @@ public class Controlador implements Initializable {
     @FXML
     public ToggleGroup groupBotoes1;
     @FXML
-    public ComboBox<String> cboxMudançaIndex;
+    public ComboBox<String> cboxMudancaIndex;
     @FXML
     public Label lbIndexPara;
     @FXML
@@ -94,9 +95,8 @@ public class Controlador implements Initializable {
         return (RadioButton) groupBotoes.getSelectedToggle();
     }
 
-    void setExecutableClicker(boolean isExecutableClicker) {
-        this.isExecutableClicker = isExecutableClicker;
-    }
+    @FXML
+    public AnchorPane painelPrincipal;
 
     private final static String LANGUAGE = System.getProperty("user.language");
 
@@ -130,7 +130,7 @@ public class Controlador implements Initializable {
     //Esse cara diz se PODE EXECUTAR UMA AÇÂO != Clicker;
 
     private boolean isExecutable = true;
-    //Seta para se tal açao deve ter um pause ou nao;
+    //Seta para se tal acao deve ter um pause ou nao;
 
     private boolean isYesPause;
 
@@ -177,6 +177,10 @@ public class Controlador implements Initializable {
     public TableColumn<Mouse, Integer> x;
     @FXML
     public TableColumn<Mouse, Integer> y;
+
+    public void setExecutableClicker(boolean isExecutableClicker) {
+        this.isExecutableClicker = isExecutableClicker;
+    }
     @FXML
     public TableColumn<Mouse, Integer> clickers;
     @FXML
@@ -258,7 +262,7 @@ public class Controlador implements Initializable {
         switch (LANGUAGE) {
             case ("pt"):
                 alert.setTitle("Error");
-                alert.setContentText("Por favor acesse Opções -> Teclado, e Resolva Erros");
+                alert.setContentText("Por favor acesse Opcões -> Teclado, e Resolva Erros");
                 alert.setHeaderText("Existem letras iguais ou faltam letras");
                 break;
             case ("fr"):
@@ -281,7 +285,7 @@ public class Controlador implements Initializable {
         switch (LANGUAGE) {
             case ("pt"):
                 alert.setTitle("Aviso");
-                alert.setContentText("Esta opção pode levar a uma perda de Clicker");
+                alert.setContentText("Esta opcão pode levar a uma perda de Clicker");
                 alert.setHeaderText("Aviso");
                 break;
             case ("fr"):
@@ -291,7 +295,7 @@ public class Controlador implements Initializable {
                 break;
             default:
                 alert.setTitle("Notice");
-                alert.setContentText("This opção can lead to a clickthrough");
+                alert.setContentText("This opcão can lead to a clickthrough");
                 alert.setHeaderText("Notice");
         }
     }
@@ -323,7 +327,7 @@ public class Controlador implements Initializable {
             case ("pt"):
                 alert.setTitle("KeyBoard");
                 alert.setHeaderText("Aqui você desativa a resposta do teclado");
-                alert.setContentText("Comandos do teclado não respondem a essa opção desativada");
+                alert.setContentText("Comandos do teclado não respondem a essa opcão desativada");
                 break;
             case ("fr"):
                 alert.setTitle("KeyBoard");
@@ -345,7 +349,7 @@ public class Controlador implements Initializable {
             case ("pt"):
                 alert.setTitle("Reset");
                 alert.setContentText("Lembre-se se. Todos os dados salvos serão redefinidos");
-                alert.setHeaderText("Aqui você reseta todas as suas informações");
+                alert.setHeaderText("Aqui você reseta todas as suas informacões");
                 break;
             case ("fr"):
                 alert.setTitle("Reset");
@@ -359,14 +363,12 @@ public class Controlador implements Initializable {
                 break;
         }
     }
+    /*
     @FXML
     public void informacoesControler() {
-        if(!isTutorialMouseControler) {
-            isTutorialMouseControler = true;
-        } else {
-            isTutorialMouseControler = false;
-        }
+        isTutorialMouseControler = !isTutorialMouseControler;
     }
+    */
 
     //<\INFORMACOES>------------------------------------------------------------------------------------------------------------------------------]
 
@@ -478,7 +480,10 @@ public class Controlador implements Initializable {
             if (!(tfWait.getText().equals(tfStop.getText()) || tfStop.getText().equals(tfStart.getText()) || tfStart.getText().equals(tfWait.getText()))) {
                 isExecutable = false;
                 cb.espera(() -> {
-                    Platform.runLater(() -> lbIniciando.setText("Em andamento..."));
+                    Platform.runLater(() -> {
+                        lbIniciando.setText("Em andamento...");
+                        pbDuracao.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+                    });
                     do {
                         Robot robotl;
                         try {
@@ -564,6 +569,7 @@ public class Controlador implements Initializable {
         Platform.runLater(() -> lbDuracao.setText(h + " : " + m + " : " + s));
     }
 
+    //aqui é utilizado recursividade, se o usuario clickou então ele fica em loop até o usuario voltar a clickar no pause.
     private void pauseClicker()  {
         if (isPause) {
             try {
@@ -582,7 +588,7 @@ public class Controlador implements Initializable {
         }
     }
 
-    private int getVelocidade(String velocidade,boolean isVelocidade) {
+    private int getVelocidade(String velocidade, boolean isVelocidade) {
         //isVelocidade true = Velocidade de Clicker(ser executada em Clicker), false = Pegar valor da velocidade(Ser executada em Calculo de Tempo ou Quantidade de Clicker)
         if (isVelocidade) {
             switch (velocidade) {
@@ -616,6 +622,7 @@ public class Controlador implements Initializable {
     @FXML
     public void stopClickerInfinite() {
         setExecutableClicker(false);
+        pbDuracao.setProgress(0);
     }
 
     /**
@@ -630,14 +637,17 @@ public class Controlador implements Initializable {
             Robot robot = new Robot();
             quantas *= getVelocidade(getGroupBotoesVelocidade().getText(),false);
             for (double i = 0; i <= quantas && isExecutableClicker; i++) {
+                //tempo para o usuario ver quando vai terminar
                 tempo((int) (quantas - i) / getVelocidade(getGroupBotoesVelocidade().getText(),false));
 
+                //duracao no progressbar
                 pbDuracao.setProgress(i / quantas);
 
+                //execucao do clicker
                 robot.delay(getVelocidade(getGroupBotoesVelocidade().getText(),true));
                 robot.mousePress(InputEvent.BUTTON1_MASK);
                 robot.mouseRelease(InputEvent.BUTTON1_MASK);
-
+                //metodo chamado caso o usuario clickou para pausar, se não volta ao normal
                 pauseClicker();
             }
         } else {
@@ -697,7 +707,8 @@ public class Controlador implements Initializable {
         try {
             Robot robot = new Robot();
             Platform.runLater(() -> lbIniciadoControler.setText(andamentoEm));
-            mousesList.forEach(k -> { System.out.println("Mudança Clicker " + mousesList.toString());
+            mousesList.forEach(k -> {
+                System.out.println("Mudanca Clicker " + mousesList.toString());
                 if(isExecutableMouseControler) {
                     for (int i = 1; i <= k.getClickers() && isExecutableMouseControler; i++) {
                         robot.mouseMove(k.getX(), k.getY());
@@ -767,7 +778,7 @@ public class Controlador implements Initializable {
             mousesList.forEach(k -> indexMouse.add(String.valueOf(k.getOrdem())));
             ObservableList<String> indexMouses = FXCollections.observableArrayList(indexMouse);
             cboxOrdem.setItems(indexMouses);
-            cboxMudançaIndex.setItems(indexMouses);
+            cboxMudancaIndex.setItems(indexMouses);
         }
     }
 
@@ -776,15 +787,15 @@ public class Controlador implements Initializable {
         String tutorialClickerTempo;
         switch (LANGUAGE) {
             case("pt") :
-                comecaEm = "Começa em ";
+                comecaEm = "Comeca em ";
                 pausaEm = "Pausar";
-                fimDaExecucao = "Fim da Execução";
+                fimDaExecucao = "Fim da Execucao";
                 andamentoEm = "Em andamento...";
                 tutorialClickerInfinite = "ClickerInfinite: serve para um clicker em\n" +
                         "velocidade já feita pelo usuário e um tempo \n" +
                         "infinito de clicker. Lembre-se, ele só Start e Stop.\n" +
                         "Sem Pause.";
-                tutorialClickerTempo = "Você terá 3 espaçamentos h,m,s. dependendo do que colocar,\n" +
+                tutorialClickerTempo = "Você terá 3 espacamentos h,m,s. dependendo do que colocar,\n" +
                         "ele dira o tempo de clicker que vai durar.\n" +
                         "Exemplo: Se você colocar pra 10s o seu clicker vai ficar clickando 10s\n" +
                         "com base na velocidade. Seu clicker vai durar 10s\n";
@@ -832,10 +843,10 @@ public class Controlador implements Initializable {
         cboxOrdem.getEditor().clear();
         cboxOrdem.getItems().clear();
         cboxOrdem.itemsProperty().getValue().clear();
-        cboxMudançaIndex.getEditor().clear();
-        cboxMudançaIndex.getItems().clear();
-        cboxMudançaIndex.itemsProperty().getValue().clear();
-        System.out.println("Mudança Index " + mousesList.toString());
+        cboxMudancaIndex.getEditor().clear();
+        cboxMudancaIndex.getItems().clear();
+        cboxMudancaIndex.itemsProperty().getValue().clear();
+        System.out.println("Mudanca Index " + mousesList.toString());
         atualizaComboBox();
     }
 
@@ -882,6 +893,7 @@ public class Controlador implements Initializable {
         } catch (NativeHookException e) {
             e.printStackTrace();
         }
+        painelPrincipal.setStyle("-fx-background-image: url(\"Image/imagem.png\"); -fx-background-size: 100% 100%;");
     }
 
     //<CONTROLER>------------------------------------------------------------------------------------------------------------------------------
@@ -1038,28 +1050,22 @@ public class Controlador implements Initializable {
                 }
                 armazenaDados();
             });
-            rbClickTempo.selectedProperty().addListener((observable, oldValue, newValue) -> {
-                armazenaDados();
-            });
-            rbClickerInfinite.selectedProperty().addListener((observable, oldValue, newValue) -> {
-                armazenaDados();
-            });
-            cboxOrdem.valueProperty().addListener((observable, oldValue, newValue) -> {
-                Platform.runLater(() -> {
-                    if(newValue != null){
-                        lbIndexPara.setText("Troca de Index " + cboxOrdem.getEditor().getText() + " Para->");
-                        lbDeleteIndex.setText("Delete Index " + cboxOrdem.getEditor().getText());
-                        if (!newValue.matches("\\d*")) {
-                            cboxOrdem.getEditor().setText(newValue.replaceAll("[^\\d]", ""));
-                        }
-                        if (mousesList.get(Integer.parseInt(newValue) - 1).getClickers() != 0) {
-                            tfClickers.setText(String.valueOf(mousesObservableList.get(Integer.parseInt(newValue) - 1).getClickers()));
-                        } else {
-                            tfClickers.setText("");
-                        }
+            rbClickTempo.selectedProperty().addListener((observable, oldValue, newValue) -> armazenaDados());
+            rbClickerInfinite.selectedProperty().addListener((observable, oldValue, newValue) -> armazenaDados());
+            cboxOrdem.valueProperty().addListener((observable, oldValue, newValue) -> Platform.runLater(() -> {
+                if (newValue != null) {
+                    lbIndexPara.setText("Troca de Index " + cboxOrdem.getEditor().getText() + " Para->");
+                    lbDeleteIndex.setText("Delete Index " + cboxOrdem.getEditor().getText());
+                    if (!newValue.matches("\\d*")) {
+                        cboxOrdem.getEditor().setText(newValue.replaceAll("[^\\d]", ""));
                     }
-                });
-            });
+                    if (mousesList.get(Integer.parseInt(newValue) - 1).getClickers() != 0) {
+                        tfClickers.setText(String.valueOf(mousesObservableList.get(Integer.parseInt(newValue) - 1).getClickers()));
+                    } else {
+                        tfClickers.setText("");
+                    }
+                }
+            }));
             tfClickers.textProperty().addListener((observable, oldValue, newValue) -> {
                 if (!newValue.matches("\\d*")) {
                     tfClickers.setText(newValue.replaceAll("[^\\d]", ""));
@@ -1074,7 +1080,7 @@ public class Controlador implements Initializable {
 
                 }
             });
-            cboxMudançaIndex.valueProperty().addListener((observable, oldValue, newValue) -> {
+            cboxMudancaIndex.valueProperty().addListener((observable, oldValue, newValue) -> {
                 if(newValue != null) {
                     int indexRaiz = Integer.parseInt(cboxOrdem.getEditor().getText()) - 1;
                     int indexCaminho = Integer.parseInt(newValue) - 1;
@@ -1085,9 +1091,9 @@ public class Controlador implements Initializable {
                     Platform.runLater(() -> {
                         isSetClickers = false;
                         cboxOrdem.getSelectionModel().select(indexCaminho);
-                        cboxMudançaIndex.getSelectionModel().clearSelection();
+                        cboxMudancaIndex.getSelectionModel().clearSelection();
                     });
-                    System.out.println("Mudança Index " + mousesList.toString());
+                    System.out.println("Mudanca Index " + mousesList.toString());
                     atualizaComboBox();
                 }
             });
@@ -1166,6 +1172,7 @@ public class Controlador implements Initializable {
                 setExecutableClicker(false);
                 isExecutableMouseControler = false;
                 isPause = true;
+                Platform.runLater(() -> pbDuracao.setProgress(0));
             }
             if(cbCtrlConfirma(letra.equals("F1"),cbCtrlOn) && !cbDesativarTeclado.isSelected()) {
                 mousesList.add(new Mouse(positionX, positionY, 0, mousesList.size() + 1));
@@ -1214,7 +1221,7 @@ public class Controlador implements Initializable {
                     for (int i = getTfTempoDeClicker(); 0 <= i; i--) {
                         try {
                             int finalI = i;
-                            Platform.runLater(() -> lbIniciando.setText(comecaEm + String.valueOf(finalI - 2) + "s"));
+                            Platform.runLater(() -> lbIniciando.setText(comecaEm + finalI + "s"));
                             Thread.sleep(1000);
                             //Stop Application for now;
                             if (!isExecutableClicker) {
@@ -1245,7 +1252,7 @@ public class Controlador implements Initializable {
                     for (int i = getTfTempoDeClicker(); 0 <= i; i--) {
                         try {
                             int finalIl = i;
-                            Platform.runLater(() -> lbIniciadoControler.setText(comecaEm + String.valueOf(finalIl) + "s"));
+                            Platform.runLater(() -> lbIniciadoControler.setText(comecaEm + finalIl + "s"));
                             Thread.sleep(1000);
                             //Stop Application for now;
                             if (!isExecutableClicker) {

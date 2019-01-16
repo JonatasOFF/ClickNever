@@ -1,0 +1,23 @@
+.color_sky {
+        -fx-background-color: #87cefa;
+}
+
+
+.color_button {
+    -fx-background-color:  #79d1ff;
+    -fx-text-fill:  #111111;
+}
+
+.color_text {
+    -fx-text-fill:  white
+}
+
+
+.color_textviews {
+    -fx-border-color: #79d1ff;
+}
+
+.color_radioBox {
+    -fx-color: #79d1ff;
+    -fx-text-fill: white;
+}
